@@ -1,0 +1,8 @@
+reviews:
+  auto: true          # включает авто‑ревью
+  review_status: true # показывает статус ревью
+  branches:
+    include:
+      - main
+      - dev
+      - setup/architecture
