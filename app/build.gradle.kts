@@ -65,5 +65,8 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+    //Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
 
 }

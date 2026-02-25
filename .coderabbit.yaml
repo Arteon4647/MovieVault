@@ -1,6 +1,6 @@
 reviews:
-  auto: true          # включает авто‑ревью
-  review_status: true # показывает статус ревью
+  auto: true
+  review_status: true
   branches:
     include:
       - main
