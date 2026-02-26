@@ -72,5 +72,8 @@ dependencies {
     implementation(libs.okhttp.logging)
     //Coil
     implementation(libs.coil.compose)
+    //Paging
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.compose)
 
 }
