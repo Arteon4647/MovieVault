@@ -1,8 +1,8 @@
 reviews:
-review_status: true
-auto_review:
-enabled: true
-base_branches:
-  - main
+  review_status: true
+  auto_review:
+    enabled: true
+    base_branches:
+    - main
     - dev
     - setup/architecture
