@@ -68,5 +68,7 @@ dependencies {
     //Retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
+    //OkHttp
+    implementation(libs.okhttp.logging)
 
 }
