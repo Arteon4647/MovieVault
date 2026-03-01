@@ -1,4 +1,4 @@
-package com.example.movievault.ui.theme
+package com.example.movievault.presentation.theme
 import androidx.compose.ui.graphics.Color
 
 //Light colors

@@ -1,4 +1,4 @@
-package com.example.movievault.ui.theme
+package com.example.movievault.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily
