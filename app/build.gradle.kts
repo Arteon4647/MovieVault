@@ -59,6 +59,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.compose.ui.text.google.fonts)
     //Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
