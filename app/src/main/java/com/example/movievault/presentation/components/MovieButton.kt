@@ -13,7 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.movievault.presentation.theme.MovieVaultTheme
 
-//Primary
 @Composable
 fun PrimaryMovieButton(
     text: String,
@@ -38,7 +37,6 @@ fun PrimaryMovieButton(
     }
 }
 
-//Secondary
 @Composable
 fun SecondaryMovieButton(
     text: String,
@@ -63,7 +61,6 @@ fun SecondaryMovieButton(
     }
 }
 
-//Preview
 @Composable
 private fun PreviewWrapper(darkTheme: Boolean, content: @Composable () -> Unit){
     MovieVaultTheme(darkTheme = darkTheme) {

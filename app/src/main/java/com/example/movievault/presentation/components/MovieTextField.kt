@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.movievault.presentation.theme.MovieVaultTheme
 
-
 @Composable
 fun MovieTextField(
     value: String,
@@ -37,7 +36,6 @@ fun MovieTextField(
     )
 }
 
-//Preview
 @Composable
 private fun PreviewWrapper(darkTheme: Boolean, content: @Composable () -> Unit){
     MovieVaultTheme(darkTheme = darkTheme) {
