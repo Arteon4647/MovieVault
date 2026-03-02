@@ -6,20 +6,20 @@ import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.example.movievault.R
 
-val provider = GoogleFont.Provider(
+private val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
     providerPackage = "com.google.android.gms",
     certificates = R.array.com_google_android_gms_fonts_certs
 )
 
-val bodyFontFamily = FontFamily(
+private val bodyFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("Roboto Condensed"),
         fontProvider = provider,
     )
 )
 
-val displayFontFamily = FontFamily(
+private val displayFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("Roboto Condensed"),
         fontProvider = provider,
@@ -27,7 +27,7 @@ val displayFontFamily = FontFamily(
 )
 
 // Default Material 3 typography values
-val baseline = Typography()
+private val baseline = Typography()
 
 val AppTypography = Typography(
     displayLarge = baseline.displayLarge.copy(fontFamily = displayFontFamily),
