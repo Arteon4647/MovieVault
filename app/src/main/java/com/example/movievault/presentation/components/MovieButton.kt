@@ -1,6 +1,9 @@
 package com.example.movievault.presentation.components
 
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -61,20 +64,70 @@ fun SecondaryMovieButton(
     }
 }
 
-@Preview(name = "Light", showBackground = true)
-@Composable
-fun ButtonPreviewLight(){
-    MovieVaultTheme() {
-        PrimaryMovieButton(text = "Primary", onClick = {})
-        SecondaryMovieButton(text = "Secondary", onClick = {})
-    }
-}
+@Retention(AnnotationRetention.BINARY)
+@Target(AnnotationTarget.FUNCTION)
+@Preview(
+    group = "Screen Size",
+    name = "Small Light",
+    device = "id:Galaxy Nexus",
+    showSystemUi = false,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    group = "Screen Size",
+    name = "Small Dark",
+    device = "id:Galaxy Nexus",
+    showSystemUi = false,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Preview(
+    group = "Screen Size",
+    name = "Medium Light",
+    device = "id:pixel_2",
+    showSystemUi = false,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    group = "Screen Size",
+    name = "Medium Dark",
+    device = "id:pixel_2",
+    showSystemUi = false,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Preview(
+    group = "Screen Size",
+    name = "Large Light",
+    device = "id:pixel_8",
+    showSystemUi = false,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    group = "Screen Size",
+    name = "Large Dark",
+    device = "id:pixel_8",
+    showSystemUi = false,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+annotation class ScreenSizesPreview
 
-@Preview(name = "Dark", showBackground = true)
+@ScreenSizesPreview
 @Composable
-fun ButtonPreviewDark(){
+fun MovieButtonsPreview() {
     MovieVaultTheme() {
-        PrimaryMovieButton(text = "Primary", onClick = {})
-        SecondaryMovieButton(text = "Secondary", onClick = {})
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            PrimaryMovieButton(
+                text = "Primary Button",
+                onClick = {}
+            )
+            SecondaryMovieButton(
+                text = "Secondary Button",
+                onClick = {}
+            )
+        }
     }
 }

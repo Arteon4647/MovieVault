@@ -94,7 +94,7 @@ data class ColorFamily(
 @Composable
 fun MovieVaultTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) darkScheme else lightScheme
 
