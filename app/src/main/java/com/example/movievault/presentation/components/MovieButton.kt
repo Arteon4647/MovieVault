@@ -1,67 +1,92 @@
 package com.example.movievault.presentation.components
 
-import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.example.movievault.presentation.theme.MovieVaultTheme
 
 @Composable
 fun PrimaryMovieButton(
-    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
-){
-    val colors = ButtonDefaults.buttonColors(
+    enabled: Boolean = true,
+    shape: Shape = ButtonDefaults.shape,
+    colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
         disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
         disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-
+    ),
+    elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
+    border: BorderStroke? = null,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    content: @Composable RowScope.() -> Unit
+) {
     Button(
         onClick = onClick,
-        colors = colors,
+        modifier = modifier,
         enabled = enabled,
-        modifier = modifier
-    ) {
-        Text(text = text, style = MaterialTheme.typography.labelLarge)
-    }
+        shape = shape,
+        colors = colors,
+        elevation = elevation,
+        border = border,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+        content = content
+    )
 }
 
 @Composable
 fun SecondaryMovieButton(
-    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
-){
-    val colors = ButtonDefaults.buttonColors(
+    enabled: Boolean = true,
+    shape: Shape = ButtonDefaults.shape,
+    colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = MaterialTheme.colorScheme.secondary,
         contentColor = MaterialTheme.colorScheme.onSecondary,
         disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
         disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-
+    ),
+    elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
+    border: BorderStroke? = null,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    content: @Composable RowScope.() -> Unit
+) {
     Button(
         onClick = onClick,
-        colors = colors,
+        modifier = modifier,
         enabled = enabled,
-        modifier = modifier
-    ) {
-        Text(text = text, style = MaterialTheme.typography.labelLarge)
-    }
+        shape = shape,
+        colors = colors,
+        elevation = elevation,
+        border = border,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+        content = content
+    )
+}
+@Composable
+private fun ContentButton(text: String) {
+    Text(text)
 }
 
 @ScreenSizesPreview
@@ -75,13 +100,16 @@ fun MovieButtonsPreview() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             PrimaryMovieButton(
-                text = "Primary Button",
                 onClick = {}
-            )
+            ) {
+                ContentButton("Primary button")
+            }
+
             SecondaryMovieButton(
-                text = "Secondary Button",
                 onClick = {}
-            )
+            ) {
+                ContentButton("Secondary button")
+            }
         }
     }
 }
