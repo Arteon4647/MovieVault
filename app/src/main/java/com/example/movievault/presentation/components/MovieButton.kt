@@ -61,21 +61,10 @@ fun SecondaryMovieButton(
     }
 }
 
-@Composable
-private fun PreviewWrapper(darkTheme: Boolean, content: @Composable () -> Unit){
-    MovieVaultTheme(darkTheme = darkTheme) {
-        Surface {
-            Column(modifier = Modifier.padding(16.dp)) {
-                content()
-            }
-        }
-    }
-}
-
 @Preview(name = "Light", showBackground = true)
 @Composable
 fun ButtonPreviewLight(){
-    PreviewWrapper(darkTheme = false) {
+    MovieVaultTheme() {
         PrimaryMovieButton(text = "Primary", onClick = {})
         SecondaryMovieButton(text = "Secondary", onClick = {})
     }
@@ -84,7 +73,7 @@ fun ButtonPreviewLight(){
 @Preview(name = "Dark", showBackground = true)
 @Composable
 fun ButtonPreviewDark(){
-    PreviewWrapper(darkTheme = true) {
+    MovieVaultTheme() {
         PrimaryMovieButton(text = "Primary", onClick = {})
         SecondaryMovieButton(text = "Secondary", onClick = {})
     }
