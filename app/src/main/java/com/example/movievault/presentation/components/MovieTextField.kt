@@ -1,5 +1,6 @@
 package com.example.movievault.presentation.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,29 +37,17 @@ fun MovieTextField(
     )
 }
 
+@ScreenSizesPreview
 @Composable
-private fun PreviewWrapper(darkTheme: Boolean, content: @Composable () -> Unit){
-    MovieVaultTheme(darkTheme = darkTheme) {
-        Surface {
-            Column(modifier = Modifier.padding(16.dp)) {
-                content()
-            }
+fun MovieTextFieldPreview() {
+    MovieVaultTheme() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            MovieTextField(value = "", onValueChange = {}, label = "Search")
         }
-    }
-}
-
-@Preview(name = "Light", showBackground = true)
-@Composable
-fun TextFiledPreviewLight(){
-    PreviewWrapper(darkTheme = false) {
-        MovieTextField(value = "", onValueChange = {}, label = "Search")
-    }
-}
-
-@Preview(name = "Dark", showBackground = true)
-@Composable
-fun TextFieldPreviewDark(){
-    PreviewWrapper(darkTheme = true) {
-        MovieTextField(value = "", onValueChange = {}, label = "Search")
     }
 }
