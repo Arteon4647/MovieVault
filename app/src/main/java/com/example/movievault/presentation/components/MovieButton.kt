@@ -5,7 +5,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -23,6 +22,7 @@ import com.example.movievault.presentation.theme.MovieVaultTheme
 
 @Composable
 fun PrimaryMovieButton(
+    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -36,8 +36,7 @@ fun PrimaryMovieButton(
     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable RowScope.() -> Unit
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     Button(
         onClick = onClick,
@@ -48,13 +47,15 @@ fun PrimaryMovieButton(
         elevation = elevation,
         border = border,
         contentPadding = contentPadding,
-        interactionSource = interactionSource,
-        content = content
-    )
+        interactionSource = interactionSource
+    ) {
+        ContentButton(text)
+    }
 }
 
 @Composable
 fun SecondaryMovieButton(
+    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -69,7 +70,6 @@ fun SecondaryMovieButton(
     border: BorderStroke? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable RowScope.() -> Unit
 ) {
     Button(
         onClick = onClick,
@@ -81,8 +81,9 @@ fun SecondaryMovieButton(
         border = border,
         contentPadding = contentPadding,
         interactionSource = interactionSource,
-        content = content
-    )
+    ) {
+        ContentButton(text)
+    }
 }
 @Composable
 private fun ContentButton(text: String) {
@@ -100,16 +101,14 @@ fun MovieButtonsPreview() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             PrimaryMovieButton(
-                onClick = {}
-            ) {
-                ContentButton("Primary button")
-            }
+                onClick = {},
+                text = "Primary button"
+            )
 
             SecondaryMovieButton(
-                onClick = {}
-            ) {
-                ContentButton("Secondary button")
-            }
+                onClick = {},
+                text = "Secondary button"
+            )
         }
     }
 }
