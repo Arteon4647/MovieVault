@@ -29,7 +29,7 @@ private val displayFontFamily = FontFamily(
 // Default Material 3 typography values
 private val baseline = Typography()
 
-val AppTypography = Typography(
+val MovieVaultTypography = Typography(
     displayLarge = baseline.displayLarge.copy(fontFamily = displayFontFamily),
     displayMedium = baseline.displayMedium.copy(fontFamily = displayFontFamily),
     displaySmall = baseline.displaySmall.copy(fontFamily = displayFontFamily),
