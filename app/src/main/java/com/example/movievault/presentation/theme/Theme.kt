@@ -100,7 +100,7 @@ fun MovieVaultTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = AppTypography,
+        typography = MovieVaultTypography,
         content = content
     )
 }
