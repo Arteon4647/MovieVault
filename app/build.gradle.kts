@@ -14,7 +14,9 @@ plugins {
 }
 
 val properties = Properties()
-properties.load(FileInputStream(rootProject.file("local.properties")))
+rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use {
+    properties.load(it)
+}
 
 android {
     namespace = "com.example.movievault"
