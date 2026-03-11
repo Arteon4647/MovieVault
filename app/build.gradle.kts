@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,6 +12,9 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
 
 }
+
+val properties = Properties()
+properties.load(FileInputStream(rootProject.file("local.properties")))
 
 android {
     namespace = "com.example.movievault"
@@ -22,6 +28,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "TMDB_API_KEY",
+            "\"${properties["TMDB_API_KEY"]}\""
+        )
     }
 
     buildTypes {
