@@ -1,4 +1,3 @@
-import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
@@ -34,7 +33,7 @@ android {
         buildConfigField(
             "String",
             "TMDB_API_KEY",
-            "\"${properties["TMDB_API_KEY"]}\""
+            "\"${properties["TMDB_API_KEY"] ?: throw GradleException("TMDB_API_KEY not found in local.properties")}\""
         )
     }
 
