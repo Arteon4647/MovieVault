@@ -1,5 +1,6 @@
 package com.example.movievault.di.network
 
+import com.example.movievault.BuildConfig
 import com.example.movievault.data.remote.api.ApiKeyInterceptor
 import com.example.movievault.data.remote.api.MovieVaultApiService
 import dagger.Module
@@ -10,6 +11,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -40,5 +42,9 @@ object NetworkModule {
     fun provideMovieVaultApiService(retrofit: Retrofit): MovieVaultApiService {
         return retrofit.create(MovieVaultApiService::class.java)
     }
+
+    @Provides
+    @Named("tmdb_api_key")
+    fun provideTmdbApiKey(): String = BuildConfig.TMDB_API_KEY
 
 }
