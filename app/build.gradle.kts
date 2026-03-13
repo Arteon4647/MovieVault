@@ -21,6 +21,11 @@ android {
     namespace = "com.example.movievault"
     compileSdk = 36
 
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.example.movievault"
         minSdk = 32
@@ -33,7 +38,7 @@ android {
         buildConfigField(
             "String",
             "TMDB_API_KEY",
-            "\"${properties["TMDB_API_KEY"] ?: throw GradleException("TMDB_API_KEY not found in local.properties")}\""
+            "\"${properties.getProperty("TMDB_API_KEY") ?: throw GradleException("TMDB_API_KEY not found in local.properties")}\""
         )
     }
 
@@ -49,9 +54,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
