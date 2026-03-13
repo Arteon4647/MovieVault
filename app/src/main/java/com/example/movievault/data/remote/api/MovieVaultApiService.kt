@@ -1,6 +1,8 @@
 package com.example.movievault.data.remote.api
 
 
+import com.example.movievault.data.remote.dto.MovieVaultDetailResponse
+import com.example.movievault.data.remote.dto.MovieVaultListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
