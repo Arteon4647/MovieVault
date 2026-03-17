@@ -4,11 +4,10 @@ import com.example.movievault.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
-import javax.inject.Named
 
 const val TMDB_API_KEY = BuildConfig.TMDB_API_KEY
 
-class ApiKeyInterceptor : Interceptor {
+class ApiKeyInterceptor @Inject constructor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val origin = chain.request()
         val newUrl = origin.url.newBuilder()
