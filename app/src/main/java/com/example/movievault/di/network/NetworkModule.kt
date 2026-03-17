@@ -59,9 +59,4 @@ object NetworkModule {
     fun provideMovieVaultApiService(retrofit: Retrofit): MovieVaultApiService {
         return retrofit.create(MovieVaultApiService::class.java)
     }
-
-    @Provides
-    @Named("tmdb_api_key")
-    fun provideTmdbApiKey(): String = BuildConfig.TMDB_API_KEY
-
 }
