@@ -9,6 +9,6 @@ data class FavoriteMovieEntity(
     val title: String,
     val posterPath: String?,
     val voteAverage: Double,
-    val releaseDate: String,
-    val overview: String
+    val releaseDate: String?,
+    val overview: String?
 )
