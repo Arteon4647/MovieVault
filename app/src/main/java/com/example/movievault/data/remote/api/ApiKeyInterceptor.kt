@@ -5,13 +5,13 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-const val TMDB_API_KEY = BuildConfig.TMDB_API_KEY
+const val API_KEY_QUERY = "api_key"
 
 class ApiKeyInterceptor @Inject constructor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val origin = chain.request()
         val newUrl = origin.url.newBuilder()
-            .addQueryParameter("api_key", TMDB_API_KEY)
+            .addQueryParameter(API_KEY_QUERY,  BuildConfig.TMDB_API_KEY)
             .build()
         val newRequest = origin.newBuilder()
             .url(newUrl).build()
