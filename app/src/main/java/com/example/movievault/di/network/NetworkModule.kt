@@ -12,7 +12,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -36,8 +35,8 @@ object NetworkModule {
         loggingInterceptor: HttpLoggingInterceptor
         ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(apiKeyInterceptor)
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(apiKeyInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
@@ -59,9 +58,4 @@ object NetworkModule {
     fun provideMovieVaultApiService(retrofit: Retrofit): MovieVaultApiService {
         return retrofit.create(MovieVaultApiService::class.java)
     }
-
-    @Provides
-    @Named("tmdb_api_key")
-    fun provideTmdbApiKey(): String = BuildConfig.TMDB_API_KEY
-
 }
