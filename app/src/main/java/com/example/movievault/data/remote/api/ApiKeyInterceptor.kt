@@ -11,7 +11,7 @@ class ApiKeyInterceptor @Inject constructor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val origin = chain.request()
         val newUrl = origin.url.newBuilder()
-            .addQueryParameter(API_KEY_QUERY,  BuildConfig.TMDB_API_KEY)
+            .addQueryParameter(API_KEY_QUERY,BuildConfig.TMDB_API_KEY)
             .build()
         val newRequest = origin.newBuilder()
             .url(newUrl).build()
