@@ -48,9 +48,9 @@ fun MovieTopBar(
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.tertiary,
             scrolledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
-            titleContentColor = MaterialTheme.colorScheme.onSurface
+            titleContentColor = MaterialTheme.colorScheme.onTertiary
         )
     )
 }
