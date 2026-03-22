@@ -79,7 +79,9 @@ fun HomeScreen(
                                 movie = movie,
                                 onClick = {
                                     Log.d("Home", "Clicked: ${movie.title}")
-                                }
+                                },
+                                isFavorite = false,
+                                onFavoriteClick = {}
                             )
                         }
                     }
