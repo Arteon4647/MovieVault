@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.movievault.presentation.components.MovieCard
+import com.example.movievault.presentation.components.MovieTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,12 +33,14 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("MovieVault") })
+            MovieTopBar(
+                title = "MovieVault",
+                onSearchClick = {},
+                onFavoritesClick = {}
+            )
         }
     ) { padding ->
-
         when (state) {
-
             is HomeUiState.Loading -> {
                 Box(
                     modifier = Modifier
