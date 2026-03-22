@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
                 val movies = getPopularMoviesUseCase()
                 _uiState.value = HomeUiState.Success(movies)
             } catch (e: Exception) {
-                _uiState.value = HomeUiState.Error(e.message ?: "Unknow error")
+                _uiState.value = HomeUiState.Error(e.message ?: "Unknown error")
             }
         }
     }
