@@ -22,6 +22,7 @@ fun MovieTopBar(
     onSearchClick: () -> Unit,
     onFavoritesClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
+    navigationIcon: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -34,6 +35,9 @@ fun MovieTopBar(
                     color = MaterialTheme.colorScheme.onTertiary
                 )
             )
+        },
+        navigationIcon = {
+            navigationIcon?.invoke()
         },
         actions = {
             IconButton(onClick = onSearchClick) {

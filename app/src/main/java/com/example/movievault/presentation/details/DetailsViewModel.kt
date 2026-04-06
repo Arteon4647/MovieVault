@@ -23,7 +23,7 @@ class DetailsViewModel @Inject constructor(
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val movieId: Int = checkNotNull(savedStateHandle["movieId"])
+    private val movieId: Int = savedStateHandle["movieId"] ?: 550
 
     private val _uiState = MutableStateFlow<DetailsUiState>(DetailsUiState.Loading)
     val uiState = _uiState.asStateFlow()
