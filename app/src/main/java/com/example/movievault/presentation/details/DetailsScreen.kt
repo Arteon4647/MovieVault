@@ -1,16 +1,16 @@
 package com.example.movievault.presentation.details
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.movievault.presentation.components.MovieTopBar
@@ -32,41 +33,20 @@ fun DetailsScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
-
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    Scaffold(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            MovieTopBar(
-                title = "Details",
-                onSearchClick = onSearchClick,
-                onFavoritesClick = onFavoriteClick,
-                scrollBehavior = scrollBehavior,
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back",
-                            tint = MaterialTheme.colorScheme.onTertiary
-                        )
-                    }
-                }
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.tertiary,
-        contentColor = MaterialTheme.colorScheme.onTertiary
-    ) { padding ->
-
+            .background(MaterialTheme.colorScheme.tertiary)
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+    ) {
         when (state) {
 
             is DetailsUiState.Loading -> {
                 Box(
                     Modifier
-                        .fillMaxSize()
-                        .padding(padding),
+                        .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
@@ -76,8 +56,7 @@ fun DetailsScreen(
             is DetailsUiState.Error -> {
                 Box(
                     Modifier
-                        .fillMaxSize()
-                        .padding(padding),
+                        .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Text((state as DetailsUiState.Error).message)
@@ -91,9 +70,32 @@ fun DetailsScreen(
                     movie = movie,
                     isFavorite = isFavorite,
                     onFavoriteClick = viewModel::toggleFavorite,
-                    modifier = Modifier.padding(padding)
+                    modifier = Modifier
                 )
             }
         }
+
+        MovieTopBar(
+            title = null,
+            onSearchClick = onSearchClick,
+            onFavoritesClick = onFavoriteClick,
+            scrollBehavior = scrollBehavior,
+            isTransparent = true,
+            showAction = false,
+            navigationIcon = {
+                IconButton(
+                    onClick = onBackClick,
+                    modifier = Modifier
+                        .background(Color.Black.copy(alpha = 0.4f), CircleShape)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.KeyboardArrowLeft,
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onTertiary
+                    )
+                }
+            },
+            modifier = Modifier.align(Alignment.TopStart)
+        )
     }
 }

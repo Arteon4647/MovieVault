@@ -13,52 +13,60 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieTopBar(
-    title: String,
+    title: String? = null,
     onSearchClick: () -> Unit,
     onFavoritesClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
+    modifier: Modifier = Modifier,
     navigationIcon: (@Composable () -> Unit)? = null,
-    modifier: Modifier = Modifier
+    isTransparent: Boolean = false,
+    showAction: Boolean = true
 ) {
     TopAppBar(
         modifier = modifier,
         title = {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onTertiary
+            if (title != null) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onTertiary
+                    )
                 )
-            )
+            }
         },
         navigationIcon = {
             navigationIcon?.invoke()
         },
         actions = {
-            IconButton(onClick = onSearchClick) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
-                    tint = MaterialTheme.colorScheme.onTertiary
-                )
-            }
+            if (showAction) {
+                IconButton(onClick = onSearchClick) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search",
+                        tint = MaterialTheme.colorScheme.onTertiary
+                    )
+                }
 
-            IconButton(onClick = onFavoritesClick) {
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = "Favorites",
-                    tint = MaterialTheme.colorScheme.onTertiary
-                )
+                IconButton(onClick = onFavoritesClick) {
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = "Favorites",
+                        tint = MaterialTheme.colorScheme.onTertiary
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.tertiary,
-            scrolledContainerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.95f),
+            containerColor = if (isTransparent) Color.Transparent
+            else MaterialTheme.colorScheme.tertiary,
+            scrolledContainerColor = MaterialTheme.colorScheme.tertiary,
             titleContentColor = MaterialTheme.colorScheme.onTertiary
         ),
         scrollBehavior = scrollBehavior
