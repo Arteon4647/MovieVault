@@ -26,7 +26,10 @@ import com.example.movievault.presentation.components.MovieTopBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
-    viewModel: DetailsViewModel = hiltViewModel()
+    viewModel: DetailsViewModel = hiltViewModel(),
+    onBackClick: () -> Unit = {},
+    onSearchClick: () -> Unit = {},
+    onFavoriteClick: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
@@ -40,11 +43,11 @@ fun DetailsScreen(
         topBar = {
             MovieTopBar(
                 title = "Details",
-                onSearchClick = {},
-                onFavoritesClick = {},
+                onSearchClick = onSearchClick,
+                onFavoritesClick = onFavoriteClick,
                 scrollBehavior = scrollBehavior,
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back",
@@ -88,7 +91,8 @@ fun DetailsScreen(
                 DetailsContent(
                     movie = movie,
                     isFavorite = isFavorite,
-                    onFavoriteClick = viewModel::toggleFavorite
+                    onFavoriteClick = viewModel::toggleFavorite,
+                    modifier = Modifier.padding(padding)
                 )
             }
         }

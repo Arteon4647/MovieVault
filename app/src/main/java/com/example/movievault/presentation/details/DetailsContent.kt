@@ -42,7 +42,8 @@ import java.util.Locale
 fun DetailsContent(
     movie: MovieDetails,
     isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    modifier: Modifier
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn {
@@ -144,7 +145,7 @@ fun DetailsContent(
                     Icons.Default.Favorite
                 else
                     Icons.Default.FavoriteBorder,
-                contentDescription = null
+                contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites"
             )
         }
     }
@@ -157,8 +158,8 @@ fun String?.formatDate(): String {
         val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val formatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
 
-        val date = parser.parse(this)
-        formatter.format(date!!)
+        val date = parser.parse(this) ?: return this
+        formatter.format(date)
     } catch (e: Exception) {
         this
     }
