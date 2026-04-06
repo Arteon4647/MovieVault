@@ -45,7 +45,7 @@ fun DetailsContent(
     onFavoriteClick: () -> Unit,
     modifier: Modifier
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         LazyColumn {
             item {
                 Box {
