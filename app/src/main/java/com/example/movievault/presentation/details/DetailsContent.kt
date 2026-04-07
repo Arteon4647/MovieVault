@@ -33,9 +33,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.movievault.R
 import com.example.movievault.domain.model.MovieDetails
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -136,7 +138,7 @@ fun DetailsContent(
                         ) {
 
                             Text(
-                                text = "⭐ %.1f".format(movie.rating),
+                                text = stringResource(R.string.rating_format).format(movie.rating),
                                 style = MaterialTheme.typography.bodyMedium
                             )
 
@@ -169,7 +171,7 @@ fun DetailsContent(
                 Spacer(Modifier.height(22.dp))
 
                 Text(
-                    text = "Overview",
+                    text = stringResource(R.string.overview),
                     style = MaterialTheme.typography.titleMedium
                 )
 
