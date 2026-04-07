@@ -1,37 +1,35 @@
 package com.example.movievault.presentation.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieTopBar(
-    title: String? = null,
-    onSearchClick: () -> Unit,
-    onFavoritesClick: () -> Unit,
-    scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier = Modifier,
-    navigationIcon: (@Composable () -> Unit)? = null,
-    isTransparent: Boolean = false,
-    showAction: Boolean = true
+    title: String? = null,
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
+        containerColor = MaterialTheme.colorScheme.tertiary,
+        scrolledContainerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.95f),
+        titleContentColor = MaterialTheme.colorScheme.onTertiary
+    ),
+    scrollBehavior: TopAppBarScrollBehavior,
 ) {
     TopAppBar(
         modifier = modifier,
-        title = {
-            if (title != null) {
+        title =  {
+            title?.let {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge.copy(
@@ -41,34 +39,9 @@ fun MovieTopBar(
                 )
             }
         },
-        navigationIcon = {
-            navigationIcon?.invoke()
-        },
-        actions = {
-            if (showAction) {
-                IconButton(onClick = onSearchClick) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search",
-                        tint = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
-
-                IconButton(onClick = onFavoritesClick) {
-                    Icon(
-                        imageVector = Icons.Default.FavoriteBorder,
-                        contentDescription = "Favorites",
-                        tint = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
-            }
-        },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = if (isTransparent) Color.Transparent
-            else MaterialTheme.colorScheme.tertiary,
-            scrolledContainerColor = MaterialTheme.colorScheme.tertiary,
-            titleContentColor = MaterialTheme.colorScheme.onTertiary
-        ),
+        actions = actions,
+        navigationIcon = navigationIcon,
+        colors = colors,
         scrollBehavior = scrollBehavior
     )
 }

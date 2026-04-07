@@ -28,8 +28,6 @@ import com.example.movievault.presentation.components.MovieTopBar
 fun DetailsScreen(
     viewModel: DetailsViewModel = hiltViewModel(),
     onBackClick: () -> Unit = {},
-    onSearchClick: () -> Unit = {},
-    onFavoriteClick: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
@@ -76,12 +74,6 @@ fun DetailsScreen(
         }
 
         MovieTopBar(
-            title = null,
-            onSearchClick = onSearchClick,
-            onFavoritesClick = onFavoriteClick,
-            scrollBehavior = scrollBehavior,
-            isTransparent = true,
-            showAction = false,
             navigationIcon = {
                 IconButton(
                     onClick = onBackClick,
@@ -95,6 +87,10 @@ fun DetailsScreen(
                     )
                 }
             },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent
+            ),
+            scrollBehavior = scrollBehavior,
             modifier = Modifier.align(Alignment.TopStart)
         )
     }
