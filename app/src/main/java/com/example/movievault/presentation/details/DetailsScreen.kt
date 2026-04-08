@@ -14,13 +14,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movievault.presentation.components.MovieTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,8 +29,8 @@ fun DetailsScreen(
     viewModel: DetailsViewModel = hiltViewModel(),
     onBackClick: () -> Unit = {},
 ) {
-    val state by viewModel.uiState.collectAsState()
-    val isFavorite by viewModel.isFavorite.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Box(
