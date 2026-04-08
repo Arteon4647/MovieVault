@@ -177,11 +177,13 @@ fun DetailsContent(
 
                 Spacer(Modifier.height(8.dp))
 
-                Text(
-                    text = movie.overview ?: "",
-                    style = MaterialTheme.typography.bodyLarge,
-                    lineHeight = 22.sp
-                )
+                movie.overview?.let {overview ->
+                    Text(
+                        text = overview,
+                        style = MaterialTheme.typography.bodyLarge,
+                        lineHeight = 22.sp
+                    )
+                }
 
                 Spacer(Modifier.height(60.dp))
             }
