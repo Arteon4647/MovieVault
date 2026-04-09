@@ -30,7 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.movievault.presentation.components.MovieCard
-import com.example.movievault.presentation.components.MovieTopBar
+import com.example.movievault.presentation.components.MovieSearchTopBar
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,7 +60,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
-                MovieTopBar(
+                MovieSearchTopBar(
                     title = "MovieVault",
                     onSearchClick = {},
                     onFavoritesClick = {},
