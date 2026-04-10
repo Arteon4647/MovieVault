@@ -43,14 +43,21 @@ fun FavoritesScreen(
                 items = movies,
                 key = { it.id }
             ) { movie ->
-                MovieCard(
+                SwipeToDeleteItem(
                     movie = movie,
-                    onClick = { onMovieClick(movie.id) },
-                    isFavorite = true,
-                    onFavoriteClick = {
+                    onDelete = {
                         viewModel.onFavoriteClick(movie)
                     }
-                )
+                ) {
+                    MovieCard(
+                        movie = movie,
+                        onClick = { onMovieClick(movie.id) },
+                        isFavorite = true,
+                        onFavoriteClick = {
+                            viewModel.onFavoriteClick(movie)
+                        }
+                    )
+                }
             }
         }
     }
