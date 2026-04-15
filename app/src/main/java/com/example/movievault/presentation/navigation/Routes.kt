@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 object HomeRoute
 
 @Serializable
-object FavoriteRoute
+object FavoritesRoute
 
 @Serializable
 data class DetailsRoute(val movieId: Int)
