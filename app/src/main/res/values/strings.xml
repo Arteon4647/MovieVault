@@ -2,5 +2,6 @@
     <string name="app_name">MovieVault</string>
     <string name="rating_format">⭐ %.1f</string>
     <string name="overview">Overview</string>
+    <string name="favorites">Favorites</string>
     <string name="no_have_favorites">You don\'t have any favorite movies yet.</string>
 </resources>
