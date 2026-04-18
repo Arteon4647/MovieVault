@@ -1,36 +1,46 @@
 package com.example.movievault.presentation.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
+import com.example.movievault.R
+import com.example.movievault.presentation.components.MovieSearchFavoriteTopBar
 import com.example.movievault.presentation.details.DetailsScreen
 import com.example.movievault.presentation.favorites.FavoritesScreen
 import com.example.movievault.presentation.home.HomeScreen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieVaultNavigation() {
     val backStack = remember {
         mutableStateListOf<Any>(HomeRoute)
     }
-    val currentRoute = backStack.last()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
-        bottomBar = {
-            if (currentRoute !is DetailsRoute) {
-                BottomBar(
-                    currentRoute = currentRoute,
-                    onTabClick = { route ->
-                        backStack.clear()
-                        backStack.add(route)
-                    }
-                )
-            }
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            MovieSearchFavoriteTopBar(
+                title = stringResource(R.string.app_name),
+                onTitleClick = {backStack.add(HomeRoute)},
+                onSearchClick = {},
+                onFavoritesClick = {backStack.add(FavoritesRoute)},
+                scrollBehavior = scrollBehavior
+
+            )
         }
     ) { padding ->
         NavDisplay(
@@ -42,17 +52,17 @@ fun MovieVaultNavigation() {
                 }
             },
             entryProvider = { route ->
-                when(route) {
-                    is HomeRoute -> NavEntry<Any>(route) {
+                when (route) {
+                    is HomeRoute -> NavEntry(route) {
                         HomeScreen()
                     }
 
-                    is FavoritesRoute -> NavEntry<Any>(route) {
-                        FavoritesScreen() {}
+                    is FavoritesRoute -> NavEntry(route) {
+                        FavoritesScreen {}
                     }
 
-                    is DetailsRoute -> NavEntry<Any>(route) {
-                        DetailsScreen {  }
+                    is DetailsRoute -> NavEntry(route) {
+                        DetailsScreen {}
                     }
 
                     else -> NavEntry(Unit) { Text("Unknown route") }

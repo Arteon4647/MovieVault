@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,7 +29,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.movievault.presentation.components.MovieCard
-import com.example.movievault.presentation.components.MovieSearchTopBar
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,15 +57,6 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = {
-                MovieSearchTopBar(
-                    title = "MovieVault",
-                    onSearchClick = {},
-                    onFavoritesClick = {},
-                    scrollBehavior = scrollBehavior,
-                    modifier = Modifier.systemBarsPadding()
-                )
-            },
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onTertiary
         ) { padding ->

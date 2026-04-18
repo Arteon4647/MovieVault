@@ -1,5 +1,6 @@
 package com.example.movievault.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 fun MovieTopBar(
     modifier: Modifier = Modifier,
     title: String? = null,
+    onTitleClick: (() -> Unit)? = null,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
@@ -28,14 +30,17 @@ fun MovieTopBar(
 ) {
     TopAppBar(
         modifier = modifier,
-        title =  {
+        title = {
             title?.let {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onTertiary
-                    )
+                    ),
+                    modifier = Modifier.clickable(onTitleClick != null) {
+                        onTitleClick?.invoke()
+                    }
                 )
             }
         },

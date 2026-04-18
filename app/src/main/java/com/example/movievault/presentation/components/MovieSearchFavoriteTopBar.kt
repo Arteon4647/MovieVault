@@ -13,8 +13,9 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieSearchTopBar(
+fun MovieSearchFavoriteTopBar(
     title: String,
+    onTitleClick: () -> Unit,
     onSearchClick: () -> Unit,
     onFavoritesClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
@@ -23,6 +24,7 @@ fun MovieSearchTopBar(
     MovieTopBar(
         modifier = modifier,
         title = title,
+        onTitleClick = onTitleClick,
         actions = {
             IconButton(onClick = onSearchClick) {
                 Icon(
