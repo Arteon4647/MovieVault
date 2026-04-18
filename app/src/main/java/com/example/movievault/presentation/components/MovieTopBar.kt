@@ -38,8 +38,10 @@ fun MovieTopBar(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onTertiary
                     ),
-                    modifier = Modifier.clickable(onTitleClick != null) {
-                        onTitleClick?.invoke()
+                    modifier = if (onTitleClick != null) {
+                        Modifier.clickable { onTitleClick() }
+                    } else {
+                        Modifier
                     }
                 )
             }

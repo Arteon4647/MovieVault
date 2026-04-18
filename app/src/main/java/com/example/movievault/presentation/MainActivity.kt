@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
-import com.example.movievault.presentation.favorites.FavoritesScreen
 import com.example.movievault.presentation.navigation.MovieVaultNavigation
 import com.example.movievault.presentation.theme.MovieVaultTheme
 import dagger.hilt.android.AndroidEntryPoint
