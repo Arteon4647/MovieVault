@@ -3,6 +3,7 @@ package com.example.movievault.presentation.navigation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -32,12 +33,14 @@ fun MovieVaultNavigation() {
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
+        containerColor = MaterialTheme.colorScheme.tertiary,
+        contentColor = MaterialTheme.colorScheme.onTertiary,
         topBar = {
             MovieSearchFavoriteTopBar(
                 title = stringResource(R.string.app_name),
-                onTitleClick = {backStack.add(HomeRoute)},
+                onTitleClick = { backStack.add(HomeRoute) },
                 onSearchClick = {},
-                onFavoritesClick = {backStack.add(FavoritesRoute)},
+                onFavoritesClick = { backStack.add(FavoritesRoute) },
                 scrollBehavior = scrollBehavior
 
             )
