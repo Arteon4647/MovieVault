@@ -29,6 +29,12 @@ fun MovieVaultNavigation() {
     }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
+    fun navigateSingleTop(route: Any) {
+        if (backStack.lastOrNull() != route) {
+            backStack.add(route)
+        }
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -38,11 +44,10 @@ fun MovieVaultNavigation() {
         topBar = {
             MovieSearchFavoriteTopBar(
                 title = stringResource(R.string.app_name),
-                onTitleClick = { backStack.add(HomeRoute) },
+                onTitleClick = { navigateSingleTop(HomeRoute) },
                 onSearchClick = {},
-                onFavoritesClick = { backStack.add(FavoritesRoute) },
+                onFavoritesClick = { navigateSingleTop(FavoritesRoute) },
                 scrollBehavior = scrollBehavior
-
             )
         }
     ) { padding ->
