@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
+    val favorites by viewModel.favorites.collectAsState()
 
     Box(
         modifier = Modifier
@@ -79,13 +81,14 @@ fun HomeScreen(
                         val movie = movies[index]
 
                         if (movie != null) {
+                            val isFavorite = favorites.any { it.id == movie.id }
                             MovieCard(
                                 movie = movie,
                                 onClick = {
                                     Log.d("Home", "Clicked: ${movie.title}")
                                 },
-                                isFavorite = false,
-                                onFavoriteClick = {}
+                                isFavorite = isFavorite,
+                                onFavoriteClick = {viewModel.toggleFavorite(movie)}
                             )
                         }
                     }
