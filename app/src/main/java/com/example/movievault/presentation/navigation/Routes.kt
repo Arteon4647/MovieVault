@@ -1,12 +1,16 @@
 package com.example.movievault.presentation.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-object HomeRoute
+sealed interface MovieVaultNavKey : NavKey
 
 @Serializable
-object FavoritesRoute
+data object HomeRoute : MovieVaultNavKey
 
 @Serializable
-data class DetailsRoute(val movieId: Int)
+data object FavoritesRoute : MovieVaultNavKey
+
+@Serializable
+data class DetailsRoute(val movieId: Int) : MovieVaultNavKey

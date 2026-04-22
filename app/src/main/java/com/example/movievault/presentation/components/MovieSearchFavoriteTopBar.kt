@@ -26,18 +26,18 @@ fun MovieSearchFavoriteTopBar(
         title = title,
         onTitleClick = onTitleClick,
         actions = {
-            IconButton(onClick = onSearchClick) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
-                    tint = MaterialTheme.colorScheme.onTertiary
-                )
-            }
-
             IconButton(onClick = onFavoritesClick) {
                 Icon(
                     imageVector = Icons.Default.FavoriteBorder,
                     contentDescription = "Favorites",
+                    tint = MaterialTheme.colorScheme.onTertiary
+                )
+            }
+
+            IconButton(onClick = onSearchClick) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search",
                     tint = MaterialTheme.colorScheme.onTertiary
                 )
             }
