@@ -83,15 +83,14 @@ fun FavoritesScreen(
                 scrollBehavior = scrollBehavior
             )
             if (movies.isEmpty()) {
-                Box(modifier = Modifier.padding()) {
+                Box {
                     EmptyState()
                 }
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(),
+                        .fillMaxSize(),
                     contentPadding = PaddingValues(
                         start = 12.dp,
                         end = 12.dp,

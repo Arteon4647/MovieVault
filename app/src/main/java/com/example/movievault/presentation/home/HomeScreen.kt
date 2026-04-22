@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.example.movievault.R
 import com.example.movievault.presentation.components.MovieCard
 import com.example.movievault.presentation.components.MovieSearchFavoriteTopBar
@@ -63,8 +64,7 @@ fun HomeScreen(
                 is HomeUiState.Loading -> {
                     Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(),
+                            .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator()
@@ -74,8 +74,7 @@ fun HomeScreen(
                 is HomeUiState.Error -> {
                     Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(),
+                            .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(text = state.message)
@@ -88,8 +87,7 @@ fun HomeScreen(
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(),
+                            .fillMaxSize(),
                         contentPadding = PaddingValues(
                             start = 12.dp,
                             end = 12.dp,
@@ -98,7 +96,10 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(movies.itemCount) { index ->
+                        items(
+                            count = movies.itemCount,
+                            key = movies.itemKey { it.id }
+                        ) { index ->
                             val movie = movies[index]
 
                             if (movie != null) {
