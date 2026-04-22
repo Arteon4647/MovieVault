@@ -13,15 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.FilledIconButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
@@ -34,11 +30,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.movievault.R
 import com.example.movievault.domain.model.MovieDetails
+import com.example.movievault.presentation.components.FavoriteIconButtonWithDialog
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -105,32 +103,27 @@ fun DetailsContent(
                         Row(
                             Modifier.fillMaxSize(),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
                                 text = movie.title,
-                                style = MaterialTheme.typography.headlineSmall
+                                style = MaterialTheme.typography.headlineSmall,
+                                modifier = Modifier.weight(1f),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
                             )
 
-                            FilledIconButton(
-                                onClick = onFavoriteClick,
-                                colors = IconButtonDefaults.filledIconButtonColors(
-                                    containerColor =
-                                        if (isFavorite)
-                                            MaterialTheme.colorScheme.error
-                                        else
-                                            MaterialTheme.colorScheme.tertiaryContainer
-                                )
-                            ) {
-                                Icon(
-                                    imageVector =
-                                        if (isFavorite)
-                                            Icons.Default.Favorite
-                                        else
-                                            Icons.Default.FavoriteBorder,
-                                    contentDescription = null
-                                )
-                            }
+                            Spacer(Modifier.width(8.dp))
+
+                            FavoriteIconButtonWithDialog(
+                                isFavorite = isFavorite,
+                                onToggle = onFavoriteClick,
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        Color.Black.copy(alpha = 0.5f),
+                                        CircleShape
+                                    )
+                            )
                         }
 
                         Row(
@@ -177,7 +170,7 @@ fun DetailsContent(
 
                 Spacer(Modifier.height(8.dp))
 
-                movie.overview?.let {overview ->
+                movie.overview?.let { overview ->
                     Text(
                         text = overview,
                         style = MaterialTheme.typography.bodyLarge,

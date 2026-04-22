@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -29,6 +32,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.example.movievault.R
+import com.example.movievault.presentation.components.FavoriteIconButtonWithDialog
 import com.example.movievault.presentation.components.MovieCard
 import com.example.movievault.presentation.components.MovieSearchFavoriteTopBar
 
@@ -107,8 +111,20 @@ fun HomeScreen(
                                 MovieCard(
                                     movie = movie,
                                     onClick = { onMovieClick(movie.id) },
-                                    isFavorite = isFavorite,
-                                    onFavoriteClick = { viewModel.toggleFavorite(movie) }
+                                    favoriteButton = { modifier ->
+                                        FavoriteIconButtonWithDialog(
+                                            isFavorite = isFavorite,
+                                            onToggle = {
+                                                viewModel.toggleFavorite(movie)
+                                            },
+                                            modifier = modifier
+                                                .size(36.dp)
+                                                .background(
+                                                    Color.Black.copy(alpha = 0.5f),
+                                                    CircleShape
+                                                )
+                                        )
+                                    }
                                 )
                             }
                         }

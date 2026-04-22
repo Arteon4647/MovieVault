@@ -30,7 +30,7 @@ class FavoritesViewModel @Inject constructor(
 
     fun onFavoriteClick(movie: Movie) {
         viewModelScope.launch {
-            runCatching {  toggleFavoriteUseCase(movie) }
+            runCatching { toggleFavoriteUseCase(movie) }
                 .onFailure { _errors.emit("Failed to update favorites") }
         }
     }
