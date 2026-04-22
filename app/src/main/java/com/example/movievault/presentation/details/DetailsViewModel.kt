@@ -10,6 +10,7 @@ import com.example.movievault.domain.usecase.GetMovieDetailsUseCase
 import com.example.movievault.domain.usecase.ToggleFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -29,13 +30,20 @@ class DetailsViewModel @Inject constructor(
     val isFavorite = _isFavorite.asStateFlow()
 
     private var currentMovie: MovieDetails? = null
+    private var loadJob: Job? = null
+    private var favoriteJob: Job? = null
 
     fun load(movieId: Int) {
-        loadMovie(movieId)
+        loadJob?.cancel()
+        favoriteJob?.cancel()
+        currentMovie = null
+        _uiState.value = DetailsUiState.Loading
+        loadJob = loadMovie(movieId)
+        favoriteJob = observeFavorite(movieId)
     }
 
-    private fun loadMovie(movieId: Int) {
-        viewModelScope.launch {
+    private fun loadMovie(movieId: Int): Job {
+        return viewModelScope.launch {
             try {
                 val movie = getMovieDetailsUseCase(movieId)
                 if (movie != null) {
@@ -50,11 +58,10 @@ class DetailsViewModel @Inject constructor(
                 _uiState.value = DetailsUiState.Error(e.message ?: "Error")
             }
         }
-        observeFavorite(movieId)
     }
 
-    private fun observeFavorite(movieId: Int) {
-        viewModelScope.launch {
+    private fun observeFavorite(movieId: Int): Job {
+        return viewModelScope.launch {
             getFavoriteMoviesUseCase()
                 .catch { e ->
                     Log.e("DetailViewModel", "Favorites error", e)
