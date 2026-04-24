@@ -20,7 +20,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,7 +46,6 @@ fun HomeScreen(
     val state = viewModel.uiState.collectAsState().value
     val favorites by viewModel.favorites.collectAsState()
     val dialogMovieId by viewModel.dialogMovieId.collectAsState()
-    val favoritesIds = remember(favorites) { favorites.mapTo(mutableSetOf()) { it.id } }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Box(
@@ -106,7 +104,7 @@ fun HomeScreen(
                             val movie = movies[index]
 
                             if (movie != null) {
-                                val isFavorite = movie.id in favoritesIds
+                                val isFavorite = favorites.any { it.id == movie.id }
                                 MovieCard(
                                     movie = movie,
                                     onClick = { onMovieClick(movie.id) },
