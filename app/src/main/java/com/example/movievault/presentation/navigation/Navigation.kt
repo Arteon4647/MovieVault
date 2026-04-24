@@ -17,37 +17,39 @@ fun MovieVaultNavigation() {
         mutableStateListOf<Any>(HomeRoute)
     }
 
-    fun navigateAdd(route: Any) {
+    fun navigateTo(route: Any) {
         if (backStack.lastOrNull() != route) {
             backStack.add(route)
+        }
+    }
+
+    fun navigateUp() {
+        if (backStack.size > 1) {
+            backStack.removeAt(backStack.lastIndex)
         }
     }
 
     NavDisplay(
         modifier = Modifier.padding(),
         backStack = backStack,
-        onBack = {
-            if (backStack.size > 1) {
-                backStack.removeAt(backStack.lastIndex)
-            }
-        },
+        onBack = { navigateUp() },
         entryProvider = entryProvider {
             entry<HomeRoute> {
                 HomeScreen(
                     onMovieClick = { movieId ->
-                        navigateAdd(DetailsRoute(movieId))
+                        navigateTo(DetailsRoute(movieId))
                     },
                     onSearchClick = {},
-                    onFavoritesClick = { navigateAdd(FavoritesRoute) }
+                    onFavoritesClick = { navigateTo(FavoritesRoute) }
                 )
             }
 
             entry<FavoritesRoute> {
                 FavoritesScreen(
                     onMovieClick = { movieId ->
-                        navigateAdd(DetailsRoute(movieId))
+                        navigateTo(DetailsRoute(movieId))
                     },
-                    onBackClick = { backStack.removeAt(backStack.lastIndex) },
+                    onBackClick = { navigateUp() },
                     onSearchClick = {}
                 )
             }
@@ -55,7 +57,7 @@ fun MovieVaultNavigation() {
             entry<DetailsRoute> { navEntry ->
                 DetailsScreen(
                     movieId = navEntry.movieId,
-                    onBackClick = { backStack.removeAt(backStack.lastIndex) }
+                    onBackClick = { navigateUp() }
                 )
             }
         }
