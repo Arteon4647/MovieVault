@@ -28,18 +28,20 @@ import com.example.movievault.presentation.components.MovieTopBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
-    viewModel: DetailsViewModel = hiltViewModel(),
     movieId: Int,
     onBackClick: () -> Unit = {},
+    viewModel: DetailsViewModel =
+        hiltViewModel<DetailsViewModel, DetailsViewModel.Factory>(
+            creationCallback = { factory ->
+                factory.create(movieId)
+            }
+        )
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
     val dialogMovieId by viewModel.dialogMovieId.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    LaunchedEffect(movieId) {
-        viewModel.load(movieId)
-    }
     Box(
         modifier = Modifier
             .fillMaxSize()

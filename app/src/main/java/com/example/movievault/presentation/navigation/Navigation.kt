@@ -37,7 +37,6 @@ fun MovieVaultNavigation() {
                     onMovieClick = { movieId ->
                         navigateAdd(DetailsRoute(movieId))
                     },
-                    onTitleClick = { navigateAdd(HomeRoute) },
                     onSearchClick = {},
                     onFavoritesClick = { navigateAdd(FavoritesRoute) }
                 )

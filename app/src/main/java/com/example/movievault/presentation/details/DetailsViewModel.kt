@@ -9,20 +9,24 @@ import com.example.movievault.domain.usecase.GetFavoriteMoviesUseCase
 import com.example.movievault.domain.usecase.GetMovieDetailsUseCase
 import com.example.movievault.domain.usecase.ToggleFavoriteUseCase
 import com.example.movievault.presentation.components.FavoriteDialogController
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class DetailsViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = DetailsViewModel.Factory::class)
+class DetailsViewModel @AssistedInject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    @Assisted
+    private val movieId: Int
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<DetailsUiState>(DetailsUiState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -34,20 +38,14 @@ class DetailsViewModel @Inject constructor(
     val dialogMovieId = dialogController.dialogMovieId
 
     private var currentMovie: MovieDetails? = null
-    private var loadJob: Job? = null
-    private var favoriteJob: Job? = null
 
-    fun load(movieId: Int) {
-        loadJob?.cancel()
-        favoriteJob?.cancel()
-        currentMovie = null
-        _uiState.value = DetailsUiState.Loading
-        loadJob = loadMovie(movieId)
-        favoriteJob = observeFavorite(movieId)
+    init {
+        loadMovie()
+        observeFavorite()
     }
 
-    private fun loadMovie(movieId: Int): Job {
-        return viewModelScope.launch {
+    private fun loadMovie() {
+        viewModelScope.launch {
             try {
                 val movie = getMovieDetailsUseCase(movieId)
                 if (movie != null) {
@@ -64,8 +62,8 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    private fun observeFavorite(movieId: Int): Job {
-        return viewModelScope.launch {
+    private fun observeFavorite() {
+        viewModelScope.launch {
             getFavoriteMoviesUseCase()
                 .catch { e ->
                     Log.e("DetailViewModel", "Favorites error", e)
@@ -118,5 +116,12 @@ class DetailsViewModel @Inject constructor(
 
     fun dismissDialog() {
         dialogController.dismissDialog()
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            movieId: Int
+        ): DetailsViewModel
     }
 }
