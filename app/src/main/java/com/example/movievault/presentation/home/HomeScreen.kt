@@ -40,7 +40,6 @@ import com.example.movievault.presentation.components.MovieSearchFavoriteTopBar
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onTitleClick: () -> Unit,
     onSearchClick: () -> Unit,
     onFavoritesClick: () -> Unit,
     onMovieClick: (Int) -> Unit
@@ -60,7 +59,6 @@ fun HomeScreen(
         Column {
             MovieSearchFavoriteTopBar(
                 title = stringResource(R.string.app_name),
-                onTitleClick = onTitleClick,
                 onSearchClick = onSearchClick,
                 onFavoritesClick = onFavoritesClick,
                 scrollBehavior = scrollBehavior
