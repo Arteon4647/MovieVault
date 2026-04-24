@@ -6,6 +6,7 @@ import com.example.movievault.domain.model.Movie
 import com.example.movievault.domain.usecase.GetFavoriteMoviesUseCase
 import com.example.movievault.domain.usecase.GetPopularMoviesUseCase
 import com.example.movievault.domain.usecase.ToggleFavoriteUseCase
+import com.example.movievault.presentation.components.FavoriteDialogController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,6 +25,8 @@ class HomeViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
     val favorites = getFavoriteMoviesUseCase()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    private val dialogController = FavoriteDialogController()
+    val dialogMovieId = dialogController.dialogMovieId
 
     init {
         loadMovies()
@@ -45,5 +48,24 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             toggleFavoriteUseCase(movie)
         }
+    }
+
+    fun onFavoriteClick(movie: Movie, isFavorite: Boolean) {
+        dialogController.onFavoriteClick(
+            movie = movie,
+            isFavorite = isFavorite
+        ) {
+            toggleFavorite(it)
+        }
+    }
+
+    fun confirmDelete(movie: Movie) {
+        dialogController.confirmDelete(movie) {
+            toggleFavorite(it)
+        }
+    }
+
+    fun dismissDialog() {
+        dialogController.dismissDialog()
     }
 }

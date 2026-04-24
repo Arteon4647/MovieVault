@@ -22,6 +22,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -45,6 +46,7 @@ fun FavoritesScreen(
     onSearchClick: () -> Unit
 ) {
     val movies by viewModel.favorites.collectAsStateWithLifecycle()
+    val dialogMovieId by viewModel.dialogMovieId.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -112,9 +114,15 @@ fun FavoritesScreen(
                             favoriteButton = { modifier ->
                                 FavoriteIconButtonWithDialog(
                                     isFavorite = true,
-                                    onToggle = {
-                                        viewModel.onFavoriteClick(movie)
+                                    showDialog = dialogMovieId == movie.id,
+                                    onClick = {
+                                        viewModel.onFavoriteClick(
+                                            movie,
+                                            isFavorite = true
+                                        )
                                     },
+                                    onConfirm = {viewModel.confirmDelete(movie)},
+                                    onDismiss = {viewModel.dismissDialog()},
                                     modifier = modifier
                                         .size(36.dp)
                                         .background(

@@ -47,6 +47,7 @@ fun HomeScreen(
 ) {
     val state = viewModel.uiState.collectAsState().value
     val favorites by viewModel.favorites.collectAsState()
+    val dialogMovieId by viewModel.dialogMovieId.collectAsState()
     val favoritesIds = remember(favorites) { favorites.mapTo(mutableSetOf()) { it.id } }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -114,9 +115,15 @@ fun HomeScreen(
                                     favoriteButton = { modifier ->
                                         FavoriteIconButtonWithDialog(
                                             isFavorite = isFavorite,
-                                            onToggle = {
-                                                viewModel.toggleFavorite(movie)
+                                            showDialog = dialogMovieId == movie.id,
+                                            onClick = {
+                                                viewModel.onFavoriteClick(
+                                                    movie,
+                                                    isFavorite
+                                                )
                                             },
+                                            onConfirm = { viewModel.confirmDelete(movie) },
+                                            onDismiss = { viewModel.dismissDialog() },
                                             modifier = modifier
                                                 .size(36.dp)
                                                 .background(

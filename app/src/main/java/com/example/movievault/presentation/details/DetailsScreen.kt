@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ fun DetailsScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
+    val dialogMovieId by viewModel.dialogMovieId.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(movieId) {
@@ -72,7 +74,10 @@ fun DetailsScreen(
                 DetailsContent(
                     movie = movie,
                     isFavorite = isFavorite,
-                    onFavoriteClick = viewModel::toggleFavorite,
+                    showDialog = dialogMovieId != null,
+                    onFavoriteClick = viewModel::onFavoriteClick,
+                    onConfirmDelete = viewModel::confirmDelete,
+                    onDismissDialog = viewModel::dismissDialog,
                     modifier = Modifier
                 )
             }

@@ -8,6 +8,7 @@ import com.example.movievault.domain.model.MovieDetails
 import com.example.movievault.domain.usecase.GetFavoriteMoviesUseCase
 import com.example.movievault.domain.usecase.GetMovieDetailsUseCase
 import com.example.movievault.domain.usecase.ToggleFavoriteUseCase
+import com.example.movievault.presentation.components.FavoriteDialogController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -28,6 +29,9 @@ class DetailsViewModel @Inject constructor(
 
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite = _isFavorite.asStateFlow()
+
+    private val dialogController = FavoriteDialogController()
+    val dialogMovieId = dialogController.dialogMovieId
 
     private var currentMovie: MovieDetails? = null
     private var loadJob: Job? = null
@@ -87,5 +91,32 @@ class DetailsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun onFavoriteClick() {
+        val movie = currentMovie?.toMovie() ?: return
+
+        dialogController.onFavoriteClick(
+            movie = movie,
+            isFavorite = isFavorite.value,
+            toggleFavorite = {
+                toggleFavorite()
+            }
+        )
+    }
+
+    fun confirmDelete() {
+        val movie = currentMovie?.toMovie() ?: return
+
+        dialogController.confirmDelete(
+            movie = movie,
+            toggleFavorite = {
+                toggleFavorite()
+            }
+        )
+    }
+
+    fun dismissDialog() {
+        dialogController.dismissDialog()
     }
 }

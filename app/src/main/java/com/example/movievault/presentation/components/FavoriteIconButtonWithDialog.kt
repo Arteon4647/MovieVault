@@ -19,19 +19,14 @@ import androidx.compose.ui.Modifier
 @Composable
 fun FavoriteIconButtonWithDialog(
     isFavorite: Boolean,
-    onToggle: () -> Unit,
+    showDialog: Boolean,
+    onClick: () -> Unit,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var showDialog by remember { mutableStateOf(false) }
-
     IconButton(
-        onClick = {
-            if (isFavorite) {
-                showDialog = true
-            } else {
-                onToggle()
-            }
-        },
+        onClick = onClick,
         modifier = modifier
     ) {
         Icon(
@@ -49,15 +44,12 @@ fun FavoriteIconButtonWithDialog(
 
     if (showDialog) {
         AlertDialog(
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = onDismiss,
             title = { Text("Remove from favorites") },
             text = { Text("Are you sure you want to remove this movie?") },
             confirmButton = {
                 TextButton(
-                    onClick = {
-                        showDialog = false
-                        onToggle()
-                    }
+                    onClick = onConfirm
                 ) {
                     Text(
                         "Delete",
@@ -67,7 +59,7 @@ fun FavoriteIconButtonWithDialog(
             },
             dismissButton = {
                 TextButton(
-                    onClick = { showDialog = false }
+                    onClick = onDismiss
                 ) {
                     Text("Cancel")
                 }

@@ -45,7 +45,10 @@ import java.util.Locale
 fun DetailsContent(
     movie: MovieDetails,
     isFavorite: Boolean,
+    showDialog: Boolean,
     onFavoriteClick: () -> Unit,
+    onConfirmDelete: () -> Unit,
+    onDismissDialog: () -> Unit,
     modifier: Modifier
 ) {
     LazyColumn(
@@ -116,7 +119,10 @@ fun DetailsContent(
 
                             FavoriteIconButtonWithDialog(
                                 isFavorite = isFavorite,
-                                onToggle = onFavoriteClick,
+                                showDialog = showDialog,
+                                onClick = onFavoriteClick,
+                                onConfirm = onConfirmDelete,
+                                onDismiss = onDismissDialog,
                                 modifier = Modifier
                                     .size(40.dp)
                                     .background(
