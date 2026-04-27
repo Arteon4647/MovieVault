@@ -23,7 +23,7 @@ class FavoritesViewModel @Inject constructor(
     val errors = _errors.asSharedFlow()
 
     private val dialogController = FavoriteDialogController()
-    val dialogMovieId = dialogController.dialogMovieId
+    val dialogMovie = dialogController.dialogMovie
 
     val favorites = getFavoriteMoviesUseCase()
         .stateIn(
@@ -53,9 +53,8 @@ class FavoritesViewModel @Inject constructor(
         )
     }
 
-    fun confirmDelete(movie: Movie) {
+    fun confirmDelete() {
         dialogController.confirmDelete(
-            movie = movie,
             toggleFavorite = ::toggleFavorite
         )
     }

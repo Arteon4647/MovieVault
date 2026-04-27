@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class FavoriteDialogController {
-    private val _dialogMovieId = MutableStateFlow<Int?>(null)
-    val dialogMovieId = _dialogMovieId.asStateFlow()
+    private val _dialogMovie = MutableStateFlow<Movie?>(null)
+    val dialogMovie = _dialogMovie.asStateFlow()
 
     fun onFavoriteClick(
         movie: Movie,
@@ -14,21 +14,20 @@ class FavoriteDialogController {
         toggleFavorite: (Movie) -> Unit
     ) {
         if (isFavorite) {
-            _dialogMovieId.value = movie.id
+            _dialogMovie.value = movie
         } else {
             toggleFavorite(movie)
         }
     }
 
     fun confirmDelete(
-        movie: Movie,
         toggleFavorite: (Movie) -> Unit
     ) {
-        _dialogMovieId.value = null
-        toggleFavorite(movie)
+        _dialogMovie.value?.let { toggleFavorite(it) }
+        _dialogMovie.value = null
     }
 
     fun dismissDialog() {
-        _dialogMovieId.value = null
+        _dialogMovie.value = null
     }
 }

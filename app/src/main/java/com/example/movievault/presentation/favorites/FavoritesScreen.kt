@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
@@ -26,16 +24,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movievault.R
-import com.example.movievault.presentation.components.FavoriteIconButtonWithDialog
 import com.example.movievault.presentation.components.MovieCard
 import com.example.movievault.presentation.components.MovieTopBar
+import com.example.movievault.presentation.components.RemoveFromFavoritesDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +43,7 @@ fun FavoritesScreen(
     onSearchClick: () -> Unit
 ) {
     val movies by viewModel.favorites.collectAsStateWithLifecycle()
-    val dialogMovieId by viewModel.dialogMovieId.collectAsState()
+    val dialogMovie by viewModel.dialogMovie.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -110,30 +107,24 @@ fun FavoritesScreen(
                     ) { movie ->
                         MovieCard(
                             movie = movie,
+                            isFavorite = true,
                             onClick = { onMovieClick(movie.id) },
-                            favoriteButton = { modifier ->
-                                FavoriteIconButtonWithDialog(
-                                    isFavorite = true,
-                                    showDialog = dialogMovieId == movie.id,
-                                    onClick = {
-                                        viewModel.onFavoriteClick(
-                                            movie,
-                                            isFavorite = true
-                                        )
-                                    },
-                                    onConfirm = {viewModel.confirmDelete(movie)},
-                                    onDismiss = {viewModel.dismissDialog()},
-                                    modifier = modifier
-                                        .size(36.dp)
-                                        .background(
-                                            Color.Black.copy(alpha = 0.5f),
-                                            CircleShape
-                                        )
-                                )
-                            }
+                            onFavoriteClick =
+                                {
+                                    viewModel.onFavoriteClick(
+                                        movie,
+                                        true
+                                    )
+                                }
                         )
                     }
                 }
+            }
+            if (dialogMovie != null) {
+                RemoveFromFavoritesDialog(
+                    onConfirm = { viewModel.confirmDelete() },
+                    onDismiss = { viewModel.dismissDialog() }
+                )
             }
         }
     }

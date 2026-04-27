@@ -34,7 +34,7 @@ class DetailsViewModel @AssistedInject constructor(
     val isFavorite = _isFavorite.asStateFlow()
 
     private val dialogController = FavoriteDialogController()
-    val dialogMovieId = dialogController.dialogMovieId
+    val dialogMovie = dialogController.dialogMovie
 
     private var currentMovie: MovieDetails? = null
 
@@ -106,7 +106,6 @@ class DetailsViewModel @AssistedInject constructor(
         val movie = currentMovie?.toMovie() ?: return
 
         dialogController.confirmDelete(
-            movie = movie,
             toggleFavorite = {
                 toggleFavorite()
             }

@@ -23,6 +23,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movievault.presentation.components.MovieTopBar
+import com.example.movievault.presentation.components.RemoveFromFavoritesDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +39,7 @@ fun DetailsScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
-    val dialogMovieId by viewModel.dialogMovieId.collectAsState()
+    val dialogMovie by viewModel.dialogMovie.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Box(
@@ -75,13 +76,17 @@ fun DetailsScreen(
                 DetailsContent(
                     movie = movie,
                     isFavorite = isFavorite,
-                    showDialog = dialogMovieId != null,
                     onFavoriteClick = viewModel::onFavoriteClick,
-                    onConfirmDelete = viewModel::confirmDelete,
-                    onDismissDialog = viewModel::dismissDialog,
                     modifier = Modifier
                 )
             }
+        }
+
+        if (dialogMovie != null) {
+            RemoveFromFavoritesDialog(
+                onConfirm = { viewModel.confirmDelete() },
+                onDismiss = { viewModel.dismissDialog() }
+            )
         }
 
         MovieTopBar(

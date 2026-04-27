@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.movievault.R
 import com.example.movievault.domain.model.MovieDetails
-import com.example.movievault.presentation.components.FavoriteIconButtonWithDialog
+import com.example.movievault.presentation.components.FavoriteIconButton
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -45,10 +45,7 @@ import java.util.Locale
 fun DetailsContent(
     movie: MovieDetails,
     isFavorite: Boolean,
-    showDialog: Boolean,
     onFavoriteClick: () -> Unit,
-    onConfirmDelete: () -> Unit,
-    onDismissDialog: () -> Unit,
     modifier: Modifier
 ) {
     LazyColumn(
@@ -117,18 +114,13 @@ fun DetailsContent(
 
                             Spacer(Modifier.width(8.dp))
 
-                            FavoriteIconButtonWithDialog(
+                            FavoriteIconButton(
                                 isFavorite = isFavorite,
-                                showDialog = showDialog,
                                 onClick = onFavoriteClick,
-                                onConfirm = onConfirmDelete,
-                                onDismiss = onDismissDialog,
                                 modifier = Modifier
-                                    .size(40.dp)
-                                    .background(
-                                        Color.Black.copy(alpha = 0.5f),
-                                        CircleShape
-                                    )
+                                    .padding(8.dp)
+                                    .size(36.dp)
+                                    .background(Color.Black.copy(alpha = 0.5f), CircleShape)
                             )
                         }
 

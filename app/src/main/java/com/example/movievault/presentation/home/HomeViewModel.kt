@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(
     val favorites = getFavoriteMoviesUseCase()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val dialogController = FavoriteDialogController()
-    val dialogMovieId = dialogController.dialogMovieId
+    val dialogMovie = dialogController.dialogMovie
 
     init {
         loadMovies()
@@ -59,8 +59,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun confirmDelete(movie: Movie) {
-        dialogController.confirmDelete(movie) {
+    fun confirmDelete() {
+        dialogController.confirmDelete {
             toggleFavorite(it)
         }
     }

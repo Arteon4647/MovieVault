@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -38,9 +39,10 @@ import com.example.movievault.domain.model.Movie
 @Composable
 fun MovieCard(
     movie: Movie,
+    isFavorite: Boolean,
     modifier: Modifier = Modifier,
     onClick: (Movie) -> Unit,
-    favoriteButton: @Composable (Modifier) -> Unit
+    onFavoriteClick: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -76,10 +78,14 @@ fun MovieCard(
                 )
         )
 
-        favoriteButton(
-            Modifier
+        FavoriteIconButton(
+            isFavorite = isFavorite,
+            onClick = onFavoriteClick,
+            modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(8.dp)
+                .size(36.dp)
+                .background(Color.Black.copy(alpha = 0.5f), CircleShape)
         )
 
         Column(

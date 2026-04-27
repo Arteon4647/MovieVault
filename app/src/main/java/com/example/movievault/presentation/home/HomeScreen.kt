@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -31,9 +28,9 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.example.movievault.R
-import com.example.movievault.presentation.components.FavoriteIconButtonWithDialog
 import com.example.movievault.presentation.components.MovieCard
 import com.example.movievault.presentation.components.MovieSearchFavoriteTopBar
+import com.example.movievault.presentation.components.RemoveFromFavoritesDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +42,7 @@ fun HomeScreen(
 ) {
     val state = viewModel.uiState.collectAsState().value
     val favorites by viewModel.favorites.collectAsState()
-    val dialogMovieId by viewModel.dialogMovieId.collectAsState()
+    val dialogMovie by viewModel.dialogMovie.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Box(
@@ -107,31 +104,18 @@ fun HomeScreen(
                                 val isFavorite = favorites.any { it.id == movie.id }
                                 MovieCard(
                                     movie = movie,
+                                    isFavorite = isFavorite,
                                     onClick = { onMovieClick(movie.id) },
-                                    favoriteButton = { modifier ->
-                                        FavoriteIconButtonWithDialog(
-                                            isFavorite = isFavorite,
-                                            showDialog = dialogMovieId == movie.id,
-                                            onClick = {
-                                                viewModel.onFavoriteClick(
-                                                    movie,
-                                                    isFavorite
-                                                )
-                                            },
-                                            onConfirm = { viewModel.confirmDelete(movie) },
-                                            onDismiss = { viewModel.dismissDialog() },
-                                            modifier = modifier
-                                                .size(36.dp)
-                                                .background(
-                                                    Color.Black.copy(alpha = 0.5f),
-                                                    CircleShape
-                                                )
-                                        )
-                                    }
+                                    onFavoriteClick =
+                                        {
+                                            viewModel.onFavoriteClick(
+                                                movie,
+                                                isFavorite
+                                            )
+                                        }
                                 )
                             }
                         }
-
                         if (movies.loadState.append is LoadState.Loading) {
                             item {
                                 Box(
@@ -146,6 +130,13 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
+
+            if (dialogMovie != null) {
+                RemoveFromFavoritesDialog(
+                    onConfirm = { viewModel.confirmDelete() },
+                    onDismiss = { viewModel.dismissDialog() }
+                )
             }
         }
     }
