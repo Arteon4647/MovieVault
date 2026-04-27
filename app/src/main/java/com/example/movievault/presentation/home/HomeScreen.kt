@@ -10,8 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -29,7 +34,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.example.movievault.R
 import com.example.movievault.presentation.components.MovieCard
-import com.example.movievault.presentation.components.MovieSearchFavoriteTopBar
+import com.example.movievault.presentation.components.MovieTopBar
 import com.example.movievault.presentation.components.RemoveFromFavoritesDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,10 +57,25 @@ fun HomeScreen(
             .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
         Column {
-            MovieSearchFavoriteTopBar(
+            MovieTopBar(
                 title = stringResource(R.string.app_name),
-                onSearchClick = onSearchClick,
-                onFavoritesClick = onFavoritesClick,
+                actions = {
+                    IconButton(onClick = onFavoritesClick) {
+                        Icon(
+                            imageVector = Icons.Default.FavoriteBorder,
+                            contentDescription = "Favorites",
+                            tint = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+
+                    IconButton(onClick = onSearchClick) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search",
+                            tint = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+                },
                 scrollBehavior = scrollBehavior
             )
             when (state) {
