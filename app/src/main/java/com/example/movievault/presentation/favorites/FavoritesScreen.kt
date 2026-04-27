@@ -3,24 +3,27 @@ package com.example.movievault.presentation.favorites
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,18 +31,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movievault.R
 import com.example.movievault.presentation.components.MovieCard
-import com.example.movievault.presentation.components.MovieSearchTopBar
+import com.example.movievault.presentation.components.MovieTopBar
+import com.example.movievault.presentation.components.RemoveFromFavoritesDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel = hiltViewModel(),
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    onBackClick: () -> Unit,
+    onSearchClick: () -> Unit
 ) {
     val movies by viewModel.favorites.collectAsStateWithLifecycle()
+    val dialogMovie by viewModel.dialogMovie.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
 
     LaunchedEffect(Unit) {
         viewModel.errors.collect { message ->
@@ -51,32 +57,47 @@ fun FavoritesScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.tertiary)
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = {
-                MovieSearchTopBar(
-                    title = stringResource(R.string.favorites),
-                    onSearchClick = {},
-                    onFavoritesClick = {},
-                    scrollBehavior = scrollBehavior,
-                    modifier = Modifier.systemBarsPadding()
-                )
-            },
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onTertiary
-        ) { padding ->
+        Column {
+            MovieTopBar(
+                title = stringResource(R.string.favorites),
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBackClick,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.KeyboardArrowLeft,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onSearchClick) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search",
+                            tint = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
+            )
             if (movies.isEmpty()) {
-                Box(modifier = Modifier.padding(padding)) {
+                Box {
                     EmptyState()
                 }
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    modifier = Modifier.padding(padding),
-                    contentPadding = PaddingValues(12.dp),
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentPadding = PaddingValues(
+                        start = 12.dp,
+                        end = 12.dp,
+                        bottom = 12.dp
+                    ),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -84,23 +105,26 @@ fun FavoritesScreen(
                         items = movies,
                         key = { it.id }
                     ) { movie ->
-                        SwipeToDeleteItem(
+                        MovieCard(
                             movie = movie,
-                            onDelete = {
-                                viewModel.onFavoriteClick(movie)
-                            }
-                        ) {
-                            MovieCard(
-                                movie = movie,
-                                onClick = { onMovieClick(movie.id) },
-                                isFavorite = true,
-                                onFavoriteClick = {
-                                    viewModel.onFavoriteClick(movie)
+                            isFavorite = true,
+                            onClick = { onMovieClick(movie.id) },
+                            onFavoriteClick =
+                                {
+                                    viewModel.onFavoriteClick(
+                                        movie,
+                                        true
+                                    )
                                 }
-                            )
-                        }
+                        )
                     }
                 }
+            }
+            if (dialogMovie != null) {
+                RemoveFromFavoritesDialog(
+                    onConfirm = { viewModel.confirmDelete() },
+                    onDismiss = { viewModel.dismissDialog() }
+                )
             }
         }
     }

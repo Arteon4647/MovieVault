@@ -1,82 +1,88 @@
 package com.example.movievault.presentation.home
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
+import com.example.movievault.R
 import com.example.movievault.presentation.components.MovieCard
-import com.example.movievault.presentation.components.MovieSearchTopBar
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.example.movievault.presentation.components.MovieTopBar
+import com.example.movievault.presentation.components.RemoveFromFavoritesDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onSearchClick: () -> Unit,
+    onFavoritesClick: () -> Unit,
+    onMovieClick: (Int) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
+    val favorites by viewModel.favorites.collectAsState()
+    val dialogMovie by viewModel.dialogMovie.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val systemUiController = rememberSystemUiController()
-    val color = MaterialTheme.colorScheme.tertiary
-
-    LaunchedEffect(scrollBehavior.state.collapsedFraction) {
-        systemUiController.setStatusBarColor(
-            color = color,
-            darkIcons = false
-        )
-    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.tertiary)
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = {
-                MovieSearchTopBar(
-                    title = "MovieVault",
-                    onSearchClick = {},
-                    onFavoritesClick = {},
-                    scrollBehavior = scrollBehavior,
-                    modifier = Modifier.systemBarsPadding()
-                )
-            },
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onTertiary
-        ) { padding ->
+        Column {
+            MovieTopBar(
+                title = stringResource(R.string.app_name),
+                actions = {
+                    IconButton(onClick = onFavoritesClick) {
+                        Icon(
+                            imageVector = Icons.Default.FavoriteBorder,
+                            contentDescription = "Favorites",
+                            tint = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+
+                    IconButton(onClick = onSearchClick) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search",
+                            tint = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
+            )
             when (state) {
                 is HomeUiState.Loading -> {
                     Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding),
+                            .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator()
@@ -86,8 +92,7 @@ fun HomeScreen(
                 is HomeUiState.Error -> {
                     Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding),
+                            .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(text = state.message)
@@ -100,9 +105,7 @@ fun HomeScreen(
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding)
-                            .offset(y = (-24).dp),
+                            .fillMaxSize(),
                         contentPadding = PaddingValues(
                             start = 12.dp,
                             end = 12.dp,
@@ -111,21 +114,28 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(movies.itemCount) { index ->
+                        items(
+                            count = movies.itemCount,
+                            key = movies.itemKey { it.id }
+                        ) { index ->
                             val movie = movies[index]
 
                             if (movie != null) {
+                                val isFavorite = favorites.any { it.id == movie.id }
                                 MovieCard(
                                     movie = movie,
-                                    onClick = {
-                                        Log.d("Home", "Clicked: ${movie.title}")
-                                    },
-                                    isFavorite = false,
-                                    onFavoriteClick = {}
+                                    isFavorite = isFavorite,
+                                    onClick = { onMovieClick(movie.id) },
+                                    onFavoriteClick =
+                                        {
+                                            viewModel.onFavoriteClick(
+                                                movie,
+                                                isFavorite
+                                            )
+                                        }
                                 )
                             }
                         }
-
                         if (movies.loadState.append is LoadState.Loading) {
                             item {
                                 Box(
@@ -140,6 +150,13 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
+
+            if (dialogMovie != null) {
+                RemoveFromFavoritesDialog(
+                    onConfirm = { viewModel.confirmDelete() },
+                    onDismiss = { viewModel.dismissDialog() }
+                )
             }
         }
     }
