@@ -10,6 +10,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.movievault.presentation.details.DetailsScreen
 import com.example.movievault.presentation.favorites.FavoritesScreen
 import com.example.movievault.presentation.home.HomeScreen
+import com.example.movievault.presentation.search.SearchScreen
 
 @Composable
 fun MovieVaultNavigation() {
@@ -39,7 +40,7 @@ fun MovieVaultNavigation() {
                     onMovieClick = { movieId ->
                         navigateTo(DetailsRoute(movieId))
                     },
-                    onSearchClick = {},
+                    onSearchClick = { navigateTo(SearchRoute) },
                     onFavoritesClick = { navigateTo(FavoritesRoute) }
                 )
             }
@@ -50,7 +51,16 @@ fun MovieVaultNavigation() {
                         navigateTo(DetailsRoute(movieId))
                     },
                     onBackClick = { navigateUp() },
-                    onSearchClick = {}
+                    onSearchClick = { navigateTo(SearchRoute) }
+                )
+            }
+
+            entry<SearchRoute> {
+                SearchScreen(
+                    onMovieClick = { movieId ->
+                        navigateTo(DetailsRoute(movieId))
+                    },
+                    onBackClick = { navigateUp() }
                 )
             }
 
