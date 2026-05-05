@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieVault</string>
+    <string name="app_name">Movie Vault</string>
     <string name="rating_format">⭐ %.1f</string>
     <string name="overview">Overview</string>
     <string name="favorites">Favorites</string>

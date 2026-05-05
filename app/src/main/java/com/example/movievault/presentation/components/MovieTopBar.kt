@@ -28,7 +28,7 @@ fun MovieTopBar(
 ) {
     TopAppBar(
         modifier = modifier,
-        title =  {
+        title = {
             title?.let {
                 Text(
                     text = title,
