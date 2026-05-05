@@ -4,4 +4,9 @@
     <string name="overview">Overview</string>
     <string name="favorites">Favorites</string>
     <string name="no_have_favorites">You don\'t have any favorite movies yet.</string>
+    <string name="search">Movies search</string>
+    <string name="start_to_search">Start typing to search</string>
+    <string name="min_2_symbols">Minimum 2 symbols</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="went_wrong">Something went wrong.</string>
 </resources>
