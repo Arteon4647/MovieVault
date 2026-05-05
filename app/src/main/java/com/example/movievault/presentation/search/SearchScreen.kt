@@ -31,10 +31,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.movievault.R
 import com.example.movievault.domain.model.Movie
 import com.example.movievault.presentation.components.MovieCard
 import com.example.movievault.presentation.components.MovieTextField
@@ -81,7 +83,7 @@ fun SearchScreen(
                 value = searchQuery,
                 onValueChange = viewModel::onQueryChange,
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Movies search") },
+                placeholder = { Text(stringResource(R.string.search)) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -143,14 +145,14 @@ private fun IdleContent() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Start typing to search",
+                text = stringResource(R.string.start_to_search),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = "Minimum 2 symbols",
+                text = stringResource(R.string.min_2_symbols),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f),
                 textAlign = TextAlign.Center
@@ -179,7 +181,7 @@ private fun EmptyContent(query: String) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = "Nothing found",
+                text = stringResource(R.string.nothing_found),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
             )
@@ -230,7 +232,7 @@ private fun ErrorContent(message: String) {
             modifier = Modifier.padding(horizontal = 32.dp)
         ) {
             Text(
-                text = "Something went wrong.",
+                text = stringResource(R.string.went_wrong),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.error
             )
