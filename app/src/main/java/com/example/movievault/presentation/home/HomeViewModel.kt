@@ -2,15 +2,18 @@ package com.example.movievault.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.movievault.domain.model.Movie
 import com.example.movievault.domain.usecase.GetFavoriteMoviesUseCase
 import com.example.movievault.domain.usecase.GetPopularMoviesUseCase
 import com.example.movievault.domain.usecase.ToggleFavoriteUseCase
 import com.example.movievault.presentation.components.FavoriteDialogController
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,30 +24,20 @@ class HomeViewModel @Inject constructor(
     private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
-    val uiState = _uiState.asStateFlow()
+    val movies: Flow<PagingData<Movie>> = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            prefetchDistance = 10,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = { getPopularMoviesUseCase() }
+    ).flow.cachedIn(viewModelScope)
     val favorites = getFavoriteMoviesUseCase()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
     private val dialogController = FavoriteDialogController()
     val dialogMovie = dialogController.dialogMovie
 
-    init {
-        loadMovies()
-    }
-
-    private fun loadMovies() {
-        viewModelScope.launch {
-            _uiState.value = HomeUiState.Loading
-            try {
-                val movies = getPopularMoviesUseCase()
-                _uiState.value = HomeUiState.Success(movies)
-            } catch (e: Exception) {
-                _uiState.value = HomeUiState.Error(e.message ?: "Unknown error")
-            }
-        }
-    }
-
-    fun toggleFavorite(movie: Movie) {
+    private fun toggleFavorite(movie: Movie) {
         viewModelScope.launch {
             toggleFavoriteUseCase(movie)
         }

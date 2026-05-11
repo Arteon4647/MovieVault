@@ -6,7 +6,7 @@ import com.example.movievault.data.mapper.toDomain
 import com.example.movievault.data.remote.api.MovieVaultApiService
 import com.example.movievault.domain.model.Movie
 
-class PopularMoviesPagingSource(
+class MoviePagingSource(
     private val api: MovieVaultApiService
 ) : PagingSource<Int, Movie>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {

@@ -9,4 +9,6 @@
     <string name="min_2_symbols">Minimum 2 symbols</string>
     <string name="nothing_found">Nothing found</string>
     <string name="went_wrong">Something went wrong.</string>
+    <string name="retry">Retry</string>
+    <string name="failed_to_load_more">Failed to load more</string>
 </resources>
