@@ -9,6 +9,7 @@ import com.example.movievault.domain.usecase.GetFavoriteMoviesUseCase
 import com.example.movievault.domain.usecase.GetMovieDetailsUseCase
 import com.example.movievault.domain.usecase.ToggleFavoriteUseCase
 import com.example.movievault.presentation.components.FavoriteDialogController
+import com.example.movievault.presentation.components.toUserMessage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -43,8 +44,9 @@ class DetailsViewModel @AssistedInject constructor(
         observeFavorite()
     }
 
-    private fun loadMovie() {
+    fun loadMovie() {
         viewModelScope.launch {
+            _uiState.value = DetailsUiState.Loading
             try {
                 val movie = getMovieDetailsUseCase(movieId)
                 if (movie != null) {
@@ -56,7 +58,7 @@ class DetailsViewModel @AssistedInject constructor(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _uiState.value = DetailsUiState.Error(e.message ?: "Error")
+                _uiState.value = DetailsUiState.Error(e.toUserMessage())
             }
         }
     }
@@ -84,7 +86,7 @@ class DetailsViewModel @AssistedInject constructor(
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    _uiState.value = DetailsUiState.Error(e.message ?: "Failed to update favorite")
+                    _uiState.value = DetailsUiState.Error(e.toUserMessage())
                 }
             }
         }

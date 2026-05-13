@@ -11,4 +11,8 @@
     <string name="went_wrong">Something went wrong.</string>
     <string name="retry">Retry</string>
     <string name="failed_to_load_more">Failed to load more</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="connection_timed_out">Connection timed out. Try again</string>
+    <string name="network_error">Network error. Check your connection</string>
+    <string name="movie_not_found">Movie not found</string>
 </resources>
