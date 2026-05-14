@@ -79,6 +79,7 @@ fun ErrorState(
 }
 
 enum class EmptyIcon { SEARCH, FAVORITES }
+
 @Composable
 fun EmptyState(
     modifier: Modifier = Modifier,
