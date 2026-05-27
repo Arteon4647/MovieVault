@@ -1,8 +1,6 @@
 package com.example.movievault.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.example.movievault.data.local.db.FavoriteMovieDao
 import com.example.movievault.data.mapper.toDomain
 import com.example.movievault.data.mapper.toEntity
@@ -18,11 +16,8 @@ class MovieRepositoryImpl @Inject constructor(
     private val api: MovieVaultApiService,
     private val dao: FavoriteMovieDao
 ) : MovieRepository {
-    override fun getPopularMovies(): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = { PopularMoviesPagingSource(api) }
-        ).flow
+    override fun getPopularMoviesPagingSource(): PagingSource<Int, Movie> {
+        return MoviePagingSource(api)
     }
 
     override suspend fun searchMovie(query: String, page: Int): List<Movie> {

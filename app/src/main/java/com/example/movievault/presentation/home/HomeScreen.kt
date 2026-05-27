@@ -5,14 +5,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,7 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +31,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -45,9 +48,9 @@ fun HomeScreen(
     onFavoritesClick: () -> Unit,
     onMovieClick: (Int) -> Unit
 ) {
-    val state = viewModel.uiState.collectAsState().value
-    val favorites by viewModel.favorites.collectAsState()
-    val dialogMovie by viewModel.dialogMovie.collectAsState()
+    val movies = viewModel.movies.collectAsLazyPagingItems()
+    val favorites by viewModel.favorites.collectAsStateWithLifecycle()
+    val dialogMovie by viewModel.dialogMovie.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Box(
@@ -78,8 +81,8 @@ fun HomeScreen(
                 },
                 scrollBehavior = scrollBehavior
             )
-            when (state) {
-                is HomeUiState.Loading -> {
+            when {
+                movies.loadState.refresh is LoadState.Loading -> {
                     Box(
                         modifier = Modifier
                             .fillMaxSize(),
@@ -89,19 +92,27 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiState.Error -> {
+                movies.loadState.refresh is LoadState.Error -> {
+                    val error = movies.loadState.refresh as LoadState.Error
                     Box(
                         modifier = Modifier
                             .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = state.message)
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = error.error.message ?: stringResource(R.string.went_wrong),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Button(onClick = { movies.retry() }) {
+                                Text(stringResource(R.string.retry))
+                            }
+                        }
                     }
                 }
 
-                is HomeUiState.Success -> {
-                    val movies = state.movies.collectAsLazyPagingItems()
-
+                else -> {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         modifier = Modifier
@@ -145,6 +156,24 @@ fun HomeScreen(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     CircularProgressIndicator()
+                                }
+                            }
+                        }
+                        if (movies.loadState.append is LoadState.Error) {
+                            item {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.failed_to_load_more),
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                    Button(onClick = { movies.retry() }) {
+                                        Text(stringResource(R.string.retry))
+                                    }
                                 }
                             }
                         }

@@ -1,12 +1,12 @@
 package com.example.movievault.domain.repository
 
-import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.example.movievault.domain.model.Movie
 import com.example.movievault.domain.model.MovieDetails
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
-    fun getPopularMovies(): Flow<PagingData<Movie>>
+    fun getPopularMoviesPagingSource(): PagingSource<Int, Movie>
     suspend fun searchMovie(query: String, page: Int): List<Movie>
     suspend fun getMovieDetails(movieId: Int): MovieDetails?
     fun getFavoriteMovies(): Flow<List<Movie>>

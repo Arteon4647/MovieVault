@@ -6,7 +6,7 @@ import com.example.movievault.data.mapper.toDomain
 import com.example.movievault.data.remote.api.MovieVaultApiService
 import com.example.movievault.domain.model.Movie
 
-class PopularMoviesPagingSource(
+class MoviePagingSource(
     private val api: MovieVaultApiService
 ) : PagingSource<Int, Movie>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
@@ -26,6 +26,9 @@ class PopularMoviesPagingSource(
     }
 
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
-         return state.anchorPosition
+         return state.anchorPosition?.let { anchorPosition ->
+             val anchorPage = state.closestPageToPosition(anchorPosition)
+             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+         }
     }
 }
