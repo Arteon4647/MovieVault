@@ -8,7 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.movievault.domain.model.Movie
 import com.example.movievault.domain.usecase.GetFavoriteMoviesUseCase
-import com.example.movievault.domain.usecase.GetPopularMoviesUseCase
+import com.example.movievault.domain.usecase.GetMoviesUseCase
 import com.example.movievault.domain.usecase.ToggleFavoriteUseCase
 import com.example.movievault.presentation.components.FavoriteDialogController
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getMoviesUseCase: GetMoviesUseCase,
     private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase
 ) : ViewModel() {
@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor(
             prefetchDistance = 10,
             enablePlaceholders = false
         ),
-        pagingSourceFactory = { getPopularMoviesUseCase() }
+        pagingSourceFactory = { getMoviesUseCase() }
     ).flow.cachedIn(viewModelScope)
     val favorites = getFavoriteMoviesUseCase()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())

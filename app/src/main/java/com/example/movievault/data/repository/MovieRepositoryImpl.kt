@@ -16,7 +16,7 @@ class MovieRepositoryImpl @Inject constructor(
     private val api: MovieVaultApiService,
     private val dao: FavoriteMovieDao
 ) : MovieRepository {
-    override fun getPopularMoviesPagingSource(): PagingSource<Int, Movie> {
+    override fun getMoviesPagingSource(): PagingSource<Int, Movie> {
         return MoviePagingSource(api)
     }
 
