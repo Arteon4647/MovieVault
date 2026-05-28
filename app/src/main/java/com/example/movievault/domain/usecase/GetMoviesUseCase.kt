@@ -5,10 +5,10 @@ import com.example.movievault.domain.model.Movie
 import com.example.movievault.domain.repository.MovieRepository
 import javax.inject.Inject
 
-class GetPopularMoviesUseCase @Inject constructor(
+class GetMoviesUseCase @Inject constructor(
     private val repository: MovieRepository
 ) {
     operator fun invoke(): PagingSource<Int, Movie> {
-        return repository.getPopularMoviesPagingSource()
+        return repository.getMoviesPagingSource()
     }
 }

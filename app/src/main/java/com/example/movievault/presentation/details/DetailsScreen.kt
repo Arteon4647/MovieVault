@@ -6,12 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.movievault.presentation.components.ErrorState
+import com.example.movievault.presentation.components.LoadingState
 import com.example.movievault.presentation.components.MovieTopBar
 import com.example.movievault.presentation.components.RemoveFromFavoritesDialog
 
@@ -48,33 +48,18 @@ fun DetailsScreen(
             .background(MaterialTheme.colorScheme.tertiary)
             .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        when (state) {
+        when (val state = state) {
 
-            is DetailsUiState.Loading -> {
-                Box(
-                    Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
+            is DetailsUiState.Loading -> LoadingState()
 
-            is DetailsUiState.Error -> {
-                Box(
-                    Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text((state as DetailsUiState.Error).message)
-                }
-            }
+            is DetailsUiState.Error -> ErrorState(
+                message = state.message,
+                onRetry = { viewModel.loadMovie() }
+            )
 
             is DetailsUiState.Success -> {
-                val movie = (state as DetailsUiState.Success).movie
-
                 DetailsContent(
-                    movie = movie,
+                    movie = state.movie,
                     isFavorite = isFavorite,
                     onFavoriteClick = viewModel::onFavoriteClick,
                     modifier = Modifier

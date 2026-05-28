@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movievault.R
+import com.example.movievault.presentation.components.EmptyIcon
+import com.example.movievault.presentation.components.EmptyState
 import com.example.movievault.presentation.components.MovieCard
 import com.example.movievault.presentation.components.MovieTopBar
 import com.example.movievault.presentation.components.RemoveFromFavoritesDialog
@@ -85,9 +87,10 @@ fun FavoritesScreen(
                 scrollBehavior = scrollBehavior
             )
             if (movies.isEmpty()) {
-                Box {
-                    EmptyState()
-                }
+                EmptyState(
+                    message = stringResource(R.string.no_have_favorites),
+                    icon = EmptyIcon.FAVORITES
+                )
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),

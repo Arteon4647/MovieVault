@@ -36,9 +36,12 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.example.movievault.R
+import com.example.movievault.presentation.components.ErrorState
+import com.example.movievault.presentation.components.LoadingState
 import com.example.movievault.presentation.components.MovieCard
 import com.example.movievault.presentation.components.MovieTopBar
 import com.example.movievault.presentation.components.RemoveFromFavoritesDialog
+import com.example.movievault.presentation.components.toUserMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,34 +85,14 @@ fun HomeScreen(
                 scrollBehavior = scrollBehavior
             )
             when {
-                movies.loadState.refresh is LoadState.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
+                movies.loadState.refresh is LoadState.Loading -> LoadingState()
 
                 movies.loadState.refresh is LoadState.Error -> {
-                    val error = movies.loadState.refresh as LoadState.Error
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                text = error.error.message ?: stringResource(R.string.went_wrong),
-                                color = MaterialTheme.colorScheme.error
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
-                            Button(onClick = { movies.retry() }) {
-                                Text(stringResource(R.string.retry))
-                            }
-                        }
-                    }
+                    val error = (movies.loadState.refresh as LoadState.Error).error
+                    ErrorState(
+                        message = error.toUserMessage(),
+                        onRetry = { movies.retry() }
+                    )
                 }
 
                 else -> {
@@ -149,32 +132,17 @@ fun HomeScreen(
                         }
                         if (movies.loadState.append is LoadState.Loading) {
                             item {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    CircularProgressIndicator()
-                                }
+                                LoadingState()
                             }
                         }
                         if (movies.loadState.append is LoadState.Error) {
                             item {
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.failed_to_load_more),
-                                        color = MaterialTheme.colorScheme.error
-                                    )
-                                    Button(onClick = { movies.retry() }) {
-                                        Text(stringResource(R.string.retry))
-                                    }
-                                }
+                                val error = (movies.loadState.append as LoadState.Error).error
+                                ErrorState(
+                                    message = error.toUserMessage(),
+                                    onRetry = { movies.retry() },
+                                    modifier = Modifier.fillMaxWidth()
+                                )
                             }
                         }
                     }
