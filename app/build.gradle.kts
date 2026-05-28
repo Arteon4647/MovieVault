@@ -9,7 +9,8 @@ plugins {
     alias(libs.plugins.hilt)
     //Navigation 3
     alias(libs.plugins.jetbrains.kotlin.serialization)
-
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 val properties = Properties()
@@ -105,6 +106,10 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.accompanist.systemuicontroller)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    implementation(libs.timber)
 }
 
 ksp {
