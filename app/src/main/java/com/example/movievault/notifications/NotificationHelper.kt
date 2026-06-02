@@ -23,7 +23,7 @@ object NotificationHelper {
             description = CHANNEL_DESCRIPTION
         }
 
-        val manager = context.getSystemService(NotificationManager::class.java)
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
         manager.createNotificationChannel(channel)
     }
 
