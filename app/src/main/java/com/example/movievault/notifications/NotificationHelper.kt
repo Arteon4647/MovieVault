@@ -52,7 +52,7 @@ object NotificationHelper {
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .build()
 
-        val manager = context.getSystemService(NotificationManager::class.java)
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
         manager.notify(notificationId, notification)
     }
 }
