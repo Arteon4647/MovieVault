@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.detekt)
 }
 
 val properties = Properties()
@@ -111,6 +112,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.timber)
     implementation(libs.firebase.messaging)
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
 }
 
 ksp {

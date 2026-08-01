@@ -1,0 +1,143 @@
+build:
+  maxIssues: 0
+  excludeCorrectable: false
+
+config:
+  validation: true
+  warningsAsErrors: false
+
+complexity:
+  active: true
+
+  LongParameterList:
+    active: true
+    functionThreshold: 6
+    constructorThreshold: 7
+    ignoreDefaultParameters: true
+
+  LongMethod:
+    active: true
+    threshold: 60
+
+  LargeClass:
+    active: true
+    threshold: 300
+
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+  TooManyFunctions:
+    active: true
+    thresholdInClasses: 15
+    thresholdInObjects: 15
+    thresholdInFiles: 20
+    excludes:
+      - '**/test/**'
+      - '**/androidTest/**'
+
+  NestedBlockDepth:
+    active: true
+    threshold: 4
+
+style:
+  active: true
+
+  MagicNumber:
+    active: true
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+    ignoreAnnotated:
+      - 'Preview'
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+
+  UnusedPrivateMember:
+    active: true
+    allowedNames: ''
+
+  ReturnCount:
+    active: true
+    max: 3
+
+  WildcardImport:
+    active: true
+    excludeImports:
+      - 'kotlinx.coroutines.*'
+
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+
+  ForbiddenComment:
+    active: true
+    values:
+      - 'FIXME:'
+      - 'STOPSHIP:'
+    allowedPatterns: ''
+
+potential-bugs:
+  active: true
+
+  LateinitUsage:
+    active: false
+
+  UnsafeCallOnNullableType:
+    active: true
+
+  UnreachableCode:
+    active: true
+
+naming:
+  active: true
+
+  FunctionNaming:
+    active: true
+    functionPattern: '[a-z][a-zA-Z0-9]*'
+    ignoreAnnotated:
+      - 'Composable'
+
+  ClassNaming:
+    active: true
+    classPattern: '[A-Z][a-zA-Z0-9]*'
+
+  VariableNaming:
+    active: true
+    variablePattern: '[a-z][A-Za-z0-9]*'
+    privateVariablePattern: '_?[a-z][A-Za-z0-9]*'
+
+exceptions:
+  active: true
+
+  SwallowedException:
+    active: true
+
+  TooGenericExceptionCaught:
+    active: true
+    exceptionNames:
+      - 'Exception'
+      - 'Throwable'
+    allowedExceptionNameRegex: '_|(ignore|expected).*'
+
+  TooGenericExceptionThrown:
+    active: true
+
+coroutines:
+  active: true
+
+  GlobalCoroutineUsage:
+    active: true
+
+  RedundantSuspendModifier:
+    active: true
+
+  SuspendFunWithFlowReturnType:
+    active: true
+
+excludes:
+  - '**/build/**'
+  - '**/test/**'
+  - '**/androidTest/**'
+  - '**/*.generated.kt'
