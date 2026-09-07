@@ -1,21 +1,77 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# ── Kotlin ────────────────────────────────────────────────────────────────────
+-keep class kotlin.Metadata { *; }
+-keepclassmembers class **$WhenMappings { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# ── Domain models — не обфусковувати ─────────────────────────────────────────
+# Gson/Retrofit серіалізують поля за іменами — якщо імена зміняться, JSON не розпарситься
+-keep class com.example.movievault.data.remote.dto.** { *; }
+-keep class com.example.movievault.domain.model.** { *; }
+-keep class com.example.movievault.data.local.entity.** { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# ── Retrofit + OkHttp ─────────────────────────────────────────────────────────
+-keepattributes Signature
+-keepattributes Exceptions
+-keep class retrofit2.** { *; }
+-keep interface retrofit2.** { *; }
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+-dontwarn retrofit2.**
+-dontwarn okhttp3.**
+-dontwarn okio.**
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# ── Gson ──────────────────────────────────────────────────────────────────────
+-keep class com.google.gson.** { *; }
+-keepattributes *Annotation*
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# ── Room ──────────────────────────────────────────────────────────────────────
+-keep class * extends androidx.room.RoomDatabase
+-keep @androidx.room.Entity class *
+-dontwarn androidx.room.**
+
+# ── Hilt / Dagger ─────────────────────────────────────────────────────────────
+-keep class dagger.hilt.** { *; }
+-keep class javax.inject.** { *; }
+-keep class * extends dagger.hilt.android.internal.managers.ViewComponentManager { *; }
+-dontwarn dagger.**
+
+# ── Firebase ──────────────────────────────────────────────────────────────────
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.firebase.**
+-dontwarn com.google.android.gms.**
+
+# ── Crashlytics ───────────────────────────────────────────────────────────────
+# Зберігаємо імена класів для читабельних crash reports
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+-keep class com.google.firebase.crashlytics.** { *; }
+
+# ── Timber ────────────────────────────────────────────────────────────────────
+-dontwarn org.jetbrains.annotations.**
+-keep class timber.log.** { *; }
+
+# ── Coil ──────────────────────────────────────────────────────────────────────
+-dontwarn coil.**
+
+# ── Paging 3 ──────────────────────────────────────────────────────────────────
+-keep class androidx.paging.** { *; }
+
+# ── Coroutines ────────────────────────────────────────────────────────────────
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+-dontwarn kotlinx.coroutines.**
+
+# ── Navigation 3 ──────────────────────────────────────────────────────────────
+-keep class androidx.navigation3.** { *; }
+-keep @kotlinx.serialization.Serializable class * { *; }
+-keepclassmembers class * {
+    @kotlinx.serialization.SerialName <fields>;
+}
+
+# ── Зберегти рядки для дебагу R8 (опціонально, видали у production) ───────────
+# -printmapping build/outputs/mapping/release/mapping.txt
