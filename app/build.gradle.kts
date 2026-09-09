@@ -9,12 +9,20 @@ plugins {
     alias(libs.plugins.hilt)
     //Navigation 3
     alias(libs.plugins.jetbrains.kotlin.serialization)
-
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.appdistribution)
+    alias(libs.plugins.detekt)
 }
 
 val properties = Properties()
 rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use {
     properties.load(it)
+}
+
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) load(file.inputStream())
 }
 
 android {
@@ -42,15 +50,43 @@ android {
         )
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(localProperties["KEYSTORE_PATH"] as String)
+            storePassword = localProperties["KEYSTORE_PASSWORD"] as String
+            keyAlias = localProperties["KEY_ALIAS"] as String
+            keyPassword = localProperties["KEY_PASSWORD"] as String
+        }
+    }
+
     buildTypes {
-        release {
+        debug {
+            isDebuggable = true
             isMinifyEnabled = false
+            firebaseAppDistribution {
+                artifactType = "APK"
+                groups = "qa-team"
+                releaseNotes = "Debug build — latest changes"
+            }
+        }
+
+        release {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            firebaseAppDistribution {
+                artifactType = "APK"
+                groups = "qa-team"
+                releaseNotes = "Release build — ready for testing"
+            }
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
@@ -105,6 +141,12 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.accompanist.systemuicontroller)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    implementation(libs.timber)
+    implementation(libs.firebase.messaging)
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
 }
 
 ksp {

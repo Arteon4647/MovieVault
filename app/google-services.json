@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1001284833430",
+    "project_id": "movie-vault-94d74",
+    "storage_bucket": "movie-vault-94d74.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001284833430:android:8fc9b972316c3f357cf2b7",
+        "android_client_info": {
+          "package_name": "com.example.movievault"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw6CTvHfVOvaQ5fIwcJOxuNCft_-Y91iM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

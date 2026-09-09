@@ -65,6 +65,36 @@ Android-додаток для перегляду інформації про ф�
 емуляторі Android
 або фізичному пристрої
 
+# Як тестувати проєкт
+
+Для відправки білдів тестерам використовується Firebase App Distribution.
+
+Передумови
+Встанови Firebase CLI:
+bash
+npm install -g firebase-tools
+Залогінись у Firebase:
+bash
+firebase login
+Команди
+
+Відправити debug build тестерам:
+
+bash
+./gradlew assembleDebug appDistributionUploadDebug
+
+Відправити release build тестерам:
+
+bash
+./gradlew assembleRelease appDistributionUploadRelease
+
+Що відбувається
+
+Gradle збирає APK
+Плагін завантажує APK у Firebase App Distribution
+Тестери з групи qa-team отримують email з посиланням на завантаження
+Тестери встановлюють APK через Firebase App Distribution app
+
 # Статус проєкту 📌
 
 В розробці
