@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.appdistribution)
     alias(libs.plugins.detekt)
 }
 
@@ -62,6 +63,11 @@ android {
         debug {
             isDebuggable = true
             isMinifyEnabled = false
+            firebaseAppDistribution {
+                artifactType = "APK"
+                groups = "qa-team"
+                releaseNotes = "Debug build — latest changes"
+            }
         }
 
         release {
@@ -73,6 +79,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            firebaseAppDistribution {
+                artifactType = "APK"
+                groups = "qa-team"
+                releaseNotes = "Release build — ready for testing"
+            }
         }
     }
 
